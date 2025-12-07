@@ -36,7 +36,7 @@ const NAVI_LINKS = [
 
 export default function Navbar() {
     const { isPlaying, togglePlay } = useAudio();
-    const [isOpen, setIsOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
@@ -52,12 +52,12 @@ export default function Navbar() {
 
     // Close mobile menu on route change
     useEffect(() => {
-        setIsOpen(false);
+        setIsMobileMenuOpen(false);
     }, [pathname]);
 
     // Prevent scrolling when menu is open
     useEffect(() => {
-        if (isOpen) {
+        if (isMobileMenuOpen) {
             document.body.style.overflow = 'hidden';
         } else {
             document.body.style.overflow = 'unset';
@@ -65,19 +65,19 @@ export default function Navbar() {
         return () => {
             document.body.style.overflow = 'unset';
         };
-    }, [isOpen]);
+    }, [isMobileMenuOpen]);
 
     const isActive = (href: string) => pathname === href;
 
     return (
         <nav
-            className={`sticky top-0 z-40 w-full transition-all duration-300 shadow-md bg-gradient-oxy-blue h-16`}
+            className={`sticky top-0 z-[100] w-full transition-all duration-300 shadow-md bg-gradient-oxy-blue h-16`}
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                 <div className="flex items-center justify-between h-full">
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center z-50">
-                        <Link href="/" className="flex items-center gap-2 group" onClick={() => setIsOpen(false)}>
+                        <Link href="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
                             <div className="relative w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
                                 <Image
                                     src="/assets/logo/logo.webp"
@@ -151,11 +151,11 @@ export default function Navbar() {
                     {/* Mobile Menu Button */}
                     <div className="flex lg:hidden z-50">
                         <button
-                            onClick={() => setIsOpen(!isOpen)}
+                            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                             className="p-2 rounded-lg text-white hover:bg-white/10 transition-colors focus:outline-none"
                             aria-label="Toggle menu"
                         >
-                            {isOpen ? (
+                            {isMobileMenuOpen ? (
                                 <X className="h-8 w-8 text-white" />
                             ) : (
                                 <Menu className="h-8 w-8 text-white" />
@@ -165,54 +165,35 @@ export default function Navbar() {
                 </div>
             </div>
 
-            {/* FULL SCREEN MOBILE MENU OVERLAY */}
+            {/* Mobile Overlay */}
             <div
-                className={`fixed inset-0 z-40 bg-oxy-blue/98 backdrop-blur-xl transition-all duration-500 flex flex-col items-center justify-center ${isOpen ? "opacity-100 visible" : "opacity-0 invisible pointer-events-none"
-                    }`}
+                className={`fixed inset-0 z-40 bg-oxy-blue/98 backdrop-blur-xl flex flex-col pt-24 pb-10 px-6 transition-opacity duration-300 ${isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}
             >
-                {/* Background Decoration */}
-                <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                    <div className="absolute top-[-10%] right-[-10%] w-[500px] h-[500px] bg-oxy-orange/10 rounded-full blur-3xl animate-pulse" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-                </div>
+                {/* Conteneur de liens avec Scroll si nécessaire */}
+                <div className="flex-1 flex flex-col items-center justify-center min-h-min overflow-y-auto">
+                    <div className="flex flex-col items-center space-y-6">
+                        {NAVI_LINKS.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className={`${anton.className} text-3xl sm:text-4xl text-white hover:text-oxy-orange transition-colors tracking-wide py-2`}
+                            >
+                                {link.label.toUpperCase()}
+                            </Link>
+                        ))}
 
-                {/* Links Container */}
-                <div className="relative z-10 flex flex-col items-center gap-6 w-full max-w-md px-6">
-                    {NAVI_LINKS.map((link, index) => (
-                        <Link
-                            key={link.label}
-                            href={link.href}
-                            onClick={() => setIsOpen(false)}
-                            className={`${anton.className} text-3xl md:text-4xl text-white hover:text-oxy-orange transition-all duration-300 transform hover:scale-110 uppercase tracking-wide opacity-0 animate-in slide-in-from-bottom-4 fade-in fill-mode-forwards`}
-                            style={{
-                                animationDelay: `${isOpen ? index * 50 + 100 : 0}ms`,
-                                animationDuration: '500ms'
-                            }}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
-
-                    {/* Mobile Play Button */}
-                    <button
-                        onClick={() => {
-                            togglePlay();
-                            setIsOpen(false);
-                        }}
-                        className="mt-8 flex items-center gap-3 px-8 py-4 bg-oxy-orange text-white rounded-full text-xl font-bold shadow-xl shadow-oxy-orange/30 active:scale-95 transition-transform animate-in slide-in-from-bottom-8 fade-in fill-mode-forwards"
-                        style={{ animationDelay: `${isOpen ? NAVI_LINKS.length * 50 + 200 : 0}ms` }}
-                    >
-                        {isPlaying ? (
-                            <div className="flex gap-1 h-6 items-end">
-                                <span className="w-1.5 bg-white rounded-full animate-bounce h-3" />
-                                <span className="w-1.5 bg-white rounded-full animate-bounce h-5" style={{ animationDelay: '0.1s' }} />
-                                <span className="w-1.5 bg-white rounded-full animate-bounce h-4" style={{ animationDelay: '0.2s' }} />
-                            </div>
-                        ) : (
-                            <Play className="w-6 h-6 fill-current" />
-                        )}
-                        {isPlaying ? "En Direct" : "Écouter le Direct"}
-                    </button>
+                        {/* Ajout du bouton d'action aussi dans le menu mobile */}
+                        <div className="pt-8">
+                            <Link
+                                href="/contact"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                                className="bg-oxy-orange text-white px-8 py-3 rounded-full font-bold text-lg hover:scale-105 transition-transform shadow-lg shadow-oxy-orange/20"
+                            >
+                                DÉDICACE
+                            </Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </nav>

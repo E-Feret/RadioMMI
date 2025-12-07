@@ -56,7 +56,7 @@ export default function LiveCTA() {
                 </div>
 
                 {/* Text */}
-                <div className="space-y-3">
+                <div className="space-y-3 mb-8 md:mb-0">
                     <h3 className="text-3xl font-black text-white uppercase tracking-tight leading-none drop-shadow-lg">
                         {isPlaying ? "En Direct" : "Écouter"}
                     </h3>

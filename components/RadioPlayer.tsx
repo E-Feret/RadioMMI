@@ -82,6 +82,7 @@ export default function RadioPlayer() {
                 src={STREAM_URL}
                 preload="none"
                 onError={handleError}
+                muted={isMuted}
             />
 
             <div className="h-full px-6 flex items-center justify-between">
@@ -149,7 +150,13 @@ export default function RadioPlayer() {
                 {/* Volume Control */}
                 <div className="flex items-center justify-end space-x-3 w-1/3">
                     <button
-                        onClick={(e) => { e.stopPropagation(); toggleMute(); }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            toggleMute();
+                            if (audioRef.current) {
+                                audioRef.current.muted = !isMuted;
+                            }
+                        }}
                         className="text-white/80 hover:text-white focus:outline-none transition-colors"
                     >
                         {isMuted || volume === 0 ? (
@@ -158,7 +165,7 @@ export default function RadioPlayer() {
                             <Volume2 className="h-6 w-6" />
                         )}
                     </button>
-                    <div className="hidden sm:block relative w-24 h-1.5 bg-white/20 rounded-full overflow-hidden group">
+                    <div className="hidden md:block relative w-24 h-1.5 bg-white/20 rounded-full overflow-hidden group">
                         <input
                             type="range"
                             min="0"

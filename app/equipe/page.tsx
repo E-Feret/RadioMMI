@@ -140,7 +140,7 @@ export default function EquipePage() {
             </div>
 
             {/* GALERIE SCROLLABLE */}
-            <div className="w-full overflow-x-auto pb-12 px-4 scrollbar-hide snap-x snap-mandatory">
+            <div className="w-full overflow-x-auto pb-8 px-4 scrollbar-hide snap-x snap-mandatory touch-pan-x">
                 {/* Le 'w-max mx-auto' centre l'équipe si l'écran est large */}
                 <div className="flex gap-4 w-max mx-auto">
                     {TEAM.map((member, index) => (

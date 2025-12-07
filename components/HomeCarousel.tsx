@@ -39,7 +39,7 @@ export default function HomeCarousel() {
 
     return (
         // J'ai remplacé bg-slate-900 par bg-oxy-blue pour la cohérence charte
-        <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-oxy-blue group shadow-lg">
+        <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-oxy-blue group shadow-lg" suppressHydrationWarning={true}>
             {CAROUSEL_SLIDES.map((slide, index) => {
                 // Optimisation : On ne monte dans le DOM que le slide actif (et le précédent/suivant pour la transition si besoin, mais ici simple)
                 if (index !== currentIndex) return null;
@@ -48,10 +48,11 @@ export default function HomeCarousel() {
                     <div
                         key={index}
                         className="absolute inset-0 w-full h-full animate-fadeIn transition-opacity duration-700 ease-in-out"
+                        suppressHydrationWarning={true}
                     >
                         {/* IMAGE PRINCIPALE (NETTE & ENTIÈRE) */}
                         {/* Affiche l'image en cover pour remplir le ratio 16/9 */}
-                        <div className="relative z-10 w-full h-full">
+                        <div className="relative z-10 w-full h-full" suppressHydrationWarning={true}>
                             {slide.href ? (
                                 <Link
                                     href={slide.href}
@@ -82,20 +83,20 @@ export default function HomeCarousel() {
             {/* Navigation Buttons (Visibles au survol) */}
             <button
                 onClick={prevSlide}
-                className="absolute left-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-black/20 hover:bg-oxy-orange backdrop-blur-md text-white transition-all opacity-0 group-hover:opacity-100 border border-white/10"
+                className="absolute left-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/20 hover:bg-oxy-orange backdrop-blur-md text-white transition-all opacity-0 group-hover:opacity-100 border border-white/10"
             >
                 <ChevronLeft size={24} />
             </button>
 
             <button
                 onClick={nextSlide}
-                className="absolute right-4 top-1/2 -translate-y-1/2 z-50 p-3 rounded-full bg-black/20 hover:bg-oxy-orange backdrop-blur-md text-white transition-all opacity-0 group-hover:opacity-100 border border-white/10"
+                className="absolute right-4 top-1/2 -translate-y-1/2 z-20 p-3 rounded-full bg-black/20 hover:bg-oxy-orange backdrop-blur-md text-white transition-all opacity-0 group-hover:opacity-100 border border-white/10"
             >
                 <ChevronRight size={24} />
             </button>
 
             {/* Pagination Dots */}
-            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-50 flex space-x-2">
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex space-x-2">
                 {CAROUSEL_SLIDES.map((_, index) => (
                     <button
                         key={index}
