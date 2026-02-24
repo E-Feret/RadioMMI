@@ -7,7 +7,7 @@ export default function ContactPage() {
         <main className="min-h-screen pt-24 pb-12 px-4 md:px-8">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-4xl md:text-5xl font-black text-white mb-8 text-center uppercase tracking-tight">
-                    Contactez <span className="text-oxy-orange">Oxygène</span>
+                    Contactez <span className="text-oxy-orange">MMI</span>
                 </h1>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -26,8 +26,8 @@ export default function ContactPage() {
                                         <MapPin className="w-5 h-5 text-white" />
                                     </div>
                                     <div>
-                                        <p className="text-white font-bold">Studio Oxygène</p>
-                                        <p className="text-white/70">16 Boulevard Chamblain<br />77000 Melun</p>
+                                        <p className="text-white font-bold">Studio MMI</p>
+                                        <p className="text-white/70">IUT de Troyes<br />Département MMI</p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -45,22 +45,21 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <p className="text-white font-bold">Email</p>
-                                        <p className="text-white/70">contact@radiooxygene.fr</p>
+                                        <p className="text-white/70">contact@radiommi.fr</p>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         {/* Map */}
-                        <div className="h-[300px] rounded-3xl overflow-hidden border border-white/10 shadow-lg">
+                        <div className="h-[300px] rounded-3xl overflow-hidden border border-white/10 shadow-lg relative">
                             <iframe
-                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2637.385787688285!2d2.6599!3d48.5397!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47e5f1b0b0b0b0b1%3A0x0!2s16%20Boulevard%20Chamblain%2C%2077000%20Melun!5e0!3m2!1sfr!2sfr!4v1620000000000!5m2!1sfr!2sfr"
-                                width="100%"
-                                height="100%"
+                                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3440.710708369959!2d4.076963576943753!3d48.26929034198163!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ee990d10f3e7cf%3A0xb266ba721a3e3dca!2sIUT%20Troyes!5e1!3m2!1sfr!2sfr!4v1771891794421!5m2!1sfr!2sfr"
+                                className="absolute inset-0 w-full h-full grayscale hover:grayscale-0 transition-all duration-500"
                                 style={{ border: 0 }}
                                 allowFullScreen
                                 loading="lazy"
-                                className="grayscale hover:grayscale-0 transition-all duration-500"
+                                referrerPolicy="no-referrer-when-downgrade"
                             />
                         </div>
                     </div>

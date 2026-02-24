@@ -8,7 +8,7 @@ export default function Hero() {
             <div className="absolute inset-0">
                 <Image
                     src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?q=80&w=2070&auto=format&fit=crop"
-                    alt="Studio Radio Oxygène"
+                    alt="Studio Radio MMI"
                     fill
                     className="object-cover transition-transform duration-1000 group-hover:scale-105"
                     priority
@@ -24,7 +24,7 @@ export default function Hero() {
                         En Direct
                     </span>
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight drop-shadow-lg">
-                        Le Réveil Oxygène
+                        Le Réveil MMI
                     </h1>
                     <p className="text-2xl text-neutral-200 mb-10 font-medium max-w-2xl leading-relaxed">
                         Avec Thomas et Sarah • 6h - 10h

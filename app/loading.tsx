@@ -6,7 +6,7 @@ export default function Loading() {
             {/* Pulsing Logo */}
             <div className="relative w-32 h-32 animate-pulse">
                 <Image
-                    src="/assets/logo/logo.webp"
+                    src="/assets/logo/logo.svg"
                     alt="Chargement..."
                     fill
                     className="object-contain"

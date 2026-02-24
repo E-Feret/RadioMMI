@@ -3,19 +3,23 @@
 @theme {
   --font-sans: var(--font-inter);
 
-  /* Official Oxygène Colors */
-  --color-oxy-orange: #FE5423;
-  --color-oxy-blue: #16318B;
-  --color-oxy-grad-blue-start: #274BBB;
-  --color-oxy-grad-blue-end: #A6DBEB;
-  --color-oxy-grad-red-start: #DB554D;
-  --color-oxy-grad-pink-end: #C95AB8;
+  /* Official MMI Colors (Prestige) */
+  --color-oxy-orange: #F7B51D;
+  /* Primary (Or) */
+  --color-oxy-blue: #2C2C2C;
+  /* Surface (Anthracite) */
+  --color-oxy-grad-blue-start: #2C2C2C;
+  --color-oxy-grad-blue-end: #404040;
+  --color-oxy-grad-red-start: #F7B51D;
+  --color-oxy-grad-pink-end: #E0A015;
 
   /* Mapping to semantic names */
   --color-primary: var(--color-oxy-orange);
   --color-secondary: var(--color-oxy-blue);
   --color-accent: var(--color-oxy-grad-blue-start);
-  --color-background-page: #f8fafc;
+  --color-text-main: #FEFEFE;
+  /* Text (Blanc cassé) */
+  --color-background-page: #1a1a1a;
 }
 
 @utility bg-gradient-oxy-blue {
@@ -39,12 +43,12 @@
 }
 
 body {
-  background-image: url('/assets/fond/fond.webp');
+  background-image: url('/assets/fond/background.png');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
-  color: #16318B;
-  /* oxy-blue */
+  color: var(--color-text-main);
+  /* MMI primary text */
   font-family: var(--font-sans);
 }
 
@@ -54,8 +58,8 @@ h3,
 h4,
 h5,
 h6 {
-  color: #16318B;
-  /* oxy-blue */
+  color: var(--color-text-main);
+  /* text-main */
 }
 
 @keyframes fadeIn {

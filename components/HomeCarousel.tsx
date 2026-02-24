@@ -6,16 +6,17 @@ import Link from "next/link";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 // Données du carrousel
-const CAROUSEL_SLIDES = [
-    { src: '/assets/carrousel/les-2-du-matin.webp', alt: 'Émission Les 2 du Matin' },
-    { src: '/assets/carrousel/vrai-faux-de-nico.webp', alt: 'Le Vrai/Faux de Nico' },
-    { src: '/assets/carrousel/la-cash-list.webp', alt: 'Jeu La Cash List', href: '/jeux/cash-list' },
-    { src: '/assets/carrousel/enygme-oxygene.webp', alt: 'Jeu L\'Énigme Oxygène' },
-    { src: '/assets/carrousel/florent-barsac.webp', alt: 'Émission Florent Barsac' },
-    { src: '/assets/carrousel/gagnez-votre-enceinte-echo.webp', alt: 'Gagnez votre enceinte Echo' },
-    { src: '/assets/carrousel/59k-auditeurs-tous-les-jours.webp', alt: 'Merci à nos 59k auditeurs' },
-    { src: '/assets/carrousel/annoncez-votre-event.webp', alt: 'Annoncez votre événement antenne', href: '/contact' },
-    { src: '/assets/carrousel/frequences.webp', alt: 'Nos fréquences FM en Seine-et-Marne' },
+interface CarouselSlide {
+    src: string;
+    alt: string;
+    href?: string;
+}
+
+const CAROUSEL_SLIDES: CarouselSlide[] = [
+    { src: '/assets/carrousel/bde_recrute.png', alt: 'Le BDE recrute' },
+    { src: '/assets/carrousel/latriple.png', alt: 'La Triple' },
+    { src: '/assets/carrousel/nds.png', alt: 'Nuit des SAE' },
+    { src: '/assets/carrousel/pull.png', alt: 'Pull de promo' },
 ];
 
 export default function HomeCarousel() {

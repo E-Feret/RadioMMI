@@ -8,121 +8,65 @@ const anton = Anton({ weight: '400', subsets: ['latin'], display: 'swap' });
 
 const TEAM = [
     {
-        name: 'Aurélien',
-        role: 'Animateur du matin',
-        img: '/assets/equipe/aurélien.webp',
+        name: 'Romain Delon',
+        role: 'Chef de département MMI',
+        img: '/assets/equipe/RomainDelon.jpg',
         stats: [
-            { label: 'Passions', value: 'Les dauphins' },
-            { label: 'Qualité', value: 'Comme un poney' },
-            { label: 'Défaut', value: 'Aime porter des slips kangourou' },
-            { label: 'Rêve', value: 'Savoir ce qui se passe dans ces camionnettes' },
-            { label: 'Voudrait être', value: 'Michel Drucker' },
+            { label: 'Titre Officieux', value: 'Le GOAT de ces lieux 🐐' },
+            { label: 'Mission', value: 'Gouverner le département d\'une main de maître' },
+            { label: 'Super-pouvoir', value: 'Piloter la team MMI' },
         ]
     },
     {
-        name: 'Julie',
-        role: 'Animatrice',
-        img: '/assets/equipe/julie.webp',
+        name: 'Martial Martin',
+        role: 'Directeur de l\'IUT',
+        img: '/assets/equipe/MartialMartin.jpg',
         stats: [
-            { label: 'Passions', value: 'Tartiner du brie' },
-            { label: 'Qualité', value: 'La bonne humeur' },
-            { label: 'Défaut', value: 'Je ne sais pas faire le café' },
-            { label: 'Rêve', value: 'Bah c\'est écrit au-dessus ;)' },
-            { label: 'Voudrait être', value: 'La première femme sur la Lune' },
+            { label: 'Statut', value: 'Le grand manitou' },
+            { label: 'Objectif', value: 'Faire rayonner l\'IUT de Troyes' },
+            { label: 'Vision', value: 'L\'excellence étudiante' },
         ]
     },
     {
-        name: 'Valendrin',
-        role: 'Torrefacteur (et animateur)',
-        img: '/assets/equipe/valendrin.webp',
+        name: 'David Annebicque',
+        role: 'Directeur adjoint de l\'IUT',
+        img: '/assets/equipe/DavidAnnebicque.jpg',
         stats: [
-            { label: 'Passions', value: 'Le sport' },
-            { label: 'Qualité', value: 'Mes cheveux !' },
-            { label: 'Défaut', value: 'Casse les cafetières du boulot' },
-            { label: 'Rêve', value: 'Trouver l’anneau' },
-            { label: 'Voudrait être', value: 'Un hobbit' },
+            { label: 'Surnom', value: 'Le bras droit stratégique' },
+            { label: 'Atout', value: 'Une organisation sans faille' },
+            { label: 'Passion', value: 'Garder l\'IUT sur les bons rails' },
         ]
     },
     {
-        name: 'Christophe',
-        role: 'BOSS',
-        img: '/assets/equipe/christophe.webp',
+        name: 'Florent Libbrecht',
+        role: 'Master of WebTV & DEV',
+        img: '/assets/equipe/FlorentLibbrecht.jpg',
         stats: [
-            { label: 'Passions', value: 'Les chiffres' },
-            { label: 'Qualité', value: 'Je fais de très bonnes crêpes' },
-            { label: 'Défaut', value: 'Ne bois pas que de l\'eau' },
-            { label: 'Rêve', value: 'Nager avec des dauphins roses' },
-            { label: 'Voudrait être', value: 'JM Morandini (pour les castings)' },
+            { label: 'Atelier', value: 'Responsable de la WebTV 🎥' },
+            { label: 'Parcours', value: 'Maître du DEV Alternance 💻' },
+            { label: 'Lieu de spawn', value: 'Derrière un prompteur ou un IDE' },
         ]
     },
     {
-        name: 'Florent',
-        role: 'Journaliste',
-        img: '/assets/equipe/florent-barsac.webp',
+        name: 'Kyllian Bresson',
+        role: 'Gourou du Studio',
+        img: '/assets/equipe/KyllianBresson.jpg',
         stats: [
-            { label: 'Passions', value: 'Descendre le Loing en canoë' },
-            { label: 'Qualité', value: 'La cuisine' },
-            { label: 'Défaut', value: 'La vaisselle que je ne fais pas' },
-            { label: 'Rêve', value: 'Un monde meilleur' },
-            { label: 'Voudrait être', value: 'JJ Bourdin' },
+            { label: 'Atelier', value: 'Responsable Club Photo 📸' },
+            { label: 'Loot', value: 'Gardien du matériel studio MMI' },
+            { label: 'Titre Officieux', value: 'L\'autre GOAT (co-titulaire) 🐐' },
         ]
     },
     {
-        name: 'Charlène',
-        role: 'Super-héroïne Com\' Nord 77',
-        img: '/assets/equipe/charlene.webp',
-        contact: '07 67 00 13 37',
+        name: 'Jules Sabater',
+        role: 'Tech & Matos',
+        img: '/assets/equipe/JulesSabater.jpg',
         stats: [
-            { label: 'Passions', value: 'Transformer le quotidien en aventure' },
-            { label: 'Qualité', value: 'Répond en un éclair' },
-            { label: 'Défaut', value: 'Émotionnelle quand je m’implique' },
-            { label: 'Rêve', value: 'Road-trip en camping-car' },
+            { label: 'Binôme', value: 'Partenaire de Kyllian' },
+            { label: 'Mission', value: 'Gérer les emprunts du studio' },
+            { label: 'Avertissement', value: '"Rendez le matos à l\'heure svp"' },
         ]
-    },
-    {
-        name: 'Alexandra',
-        role: 'Cheffe des pubs (Sud 77)',
-        img: '/assets/equipe/alexandra.webp',
-        stats: [
-            { label: 'Passions', value: 'La taxidermie et la sieste' },
-            { label: 'Qualité', value: 'Dresseuse de serpents' },
-            { label: 'Défaut', value: 'Je n\'ai que des qualités' },
-            { label: 'Rêve', value: 'Chevaucher une licorne sur une plage' },
-            { label: 'Voudrait être', value: 'Zora la Rousse' },
-        ]
-    },
-    {
-        name: 'Sébastien',
-        role: 'Communiquant (Coulommiers)',
-        img: '/assets/equipe/sebatien.webp',
-        stats: [
-            { label: 'Passions', value: 'Mes enfants, La Grande Boucle, Club Dorothée' },
-            { label: 'Qualité', value: 'J\'essaie d\'être partout à la fois' },
-            { label: 'Défaut', value: 'Tête trop proche de la lune' },
-            { label: 'Rêve', value: 'Gravir le Rinjani' },
-        ]
-    },
-    {
-        name: 'Nico',
-        role: 'Réparateur machine à café',
-        img: '/assets/equipe/nico.webp',
-        stats: [
-            { label: 'Passions', value: 'Le café italien' },
-            { label: 'Qualité', value: 'Vainqueur régulier de blind-test' },
-            { label: 'Défaut', value: 'S\'éclipse des soirées sans rien dire' },
-            { label: 'Rêve', value: 'Vivre sur une péniche sur le Loing' },
-            { label: 'Voudrait être', value: 'Lève-tard' },
-        ]
-    },
-    {
-        name: 'Cécile Jacquot',
-        role: 'Animatrice',
-        img: '/assets/equipe/cecile.webp',
-        stats: [
-            { label: 'Mission', value: 'La voix d\'Oxygène' },
-            { label: 'Signe', value: 'Mystérieuse' },
-        ]
-    },
+    }
 ];
 
 export default function EquipePage() {
@@ -132,63 +76,52 @@ export default function EquipePage() {
             {/* TITRE */}
             <div className="text-center z-10 mb-8 px-4">
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-lg uppercase tracking-tight">
-                    LA FAMILLE <span className="text-oxy-orange">OXYGÈNE</span>
+                    LA FAMILLE <span className="text-oxy-orange">MMI</span>
                 </h1>
                 <p className="text-white/80 text-sm md:text-base font-medium">
-                    Ceux qui font vibrer la Seine-et-Marne
+                    Ceux qui font vibrer le département MMI
                 </p>
             </div>
 
-            {/* GALERIE SCROLLABLE */}
-            <div className="w-full overflow-x-auto pb-8 px-4 scrollbar-hide snap-x snap-mandatory touch-pan-x">
-                {/* Le 'w-max mx-auto' centre l'équipe si l'écran est large */}
-                <div className="flex gap-4 w-max mx-auto">
+            {/* GRILLE RESPONSIVE */}
+            <div className="w-full max-w-7xl mx-auto px-4 pb-12">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {TEAM.map((member, index) => (
                         <div
                             key={index}
-                            className="group relative flex h-[220px] w-[130px] hover:w-[460px] flex-shrink-0 cursor-pointer flex-row overflow-hidden rounded-lg bg-slate-900 shadow-xl transition-[width] duration-500 ease-out snap-center border border-white/10"
+                            className="group relative flex flex-col bg-slate-900 rounded-2xl overflow-hidden shadow-xl border border-white/10 transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-oxy-orange/20"
                         >
-                            {/* PHOTO FIXE (Plus étroite) */}
-                            <div className="relative h-full w-[130px] min-w-[130px]">
+                            {/* PHOTO */}
+                            <div className="relative w-full h-80 overflow-hidden">
                                 <Image
                                     src={member.img}
                                     fill
-                                    className="object-cover"
+                                    className="object-cover grayscale transition-transform duration-700 ease-out group-hover:scale-110"
                                     alt={member.name}
-                                    sizes="130px"
+                                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent" />
-                                {/* Nom permanent */}
-                                <div className="absolute bottom-2 w-full px-1 z-10">
-                                    <p className="!text-white font-bold text-center text-sm truncate drop-shadow-md">{member.name}</p>
+                                {/* Gradient for text readability */}
+                                <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-900/40 to-transparent" />
+
+                                <div className="absolute bottom-0 left-0 w-full p-6 text-left">
+                                    <h3 className="text-3xl font-bold text-white mb-1 drop-shadow-md">{member.name}</h3>
+                                    <p className={`${anton.className} text-xl text-oxy-orange uppercase tracking-wider`}>
+                                        {member.role}
+                                    </p>
                                 </div>
                             </div>
 
-                            {/* INFOS (Révélé au hover) */}
-                            <div className="h-full min-w-[320px] w-[320px] p-6 flex flex-col justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-100 bg-slate-900 border-l border-white/10">
-
-                                {/* NOM (Correction: Blanc + Gros + Force) */}
-                                <h3 className="text-3xl font-bold !text-white mb-1 drop-shadow-md">{member.name}</h3>
-
-                                {/* ROLE (Style Anton) */}
-                                <p className={`${anton.className} text-2xl text-oxy-orange uppercase tracking-wide mb-4 border-b border-white/20 pb-2 inline-block`}>
-                                    {member.role}
-                                </p>
-
-                                {/* STATS */}
-                                <div className="space-y-3 overflow-y-auto pr-2 custom-scrollbar">
-                                    {member.stats.map((stat, i) => (
-                                        <div key={i} className="text-sm text-slate-200 leading-tight">
-                                            <span className="text-oxy-orange font-bold uppercase text-xs">{stat.label} : </span>
-                                            <span className="italic">« {stat.value} »</span>
-                                        </div>
-                                    ))}
-                                </div>
+                            {/* STATS */}
+                            <div className="p-6 flex flex-col gap-4 bg-slate-950 flex-1">
+                                {member.stats.map((stat, i) => (
+                                    <div key={i} className="text-sm">
+                                        <div className="text-oxy-orange/90 font-bold uppercase text-xs mb-1 tracking-wider">{stat.label}</div>
+                                        <div className="italic text-white/90">« {stat.value} »</div>
+                                    </div>
+                                ))}
                             </div>
                         </div>
                     ))}
-                    {/* Padding fantôme à droite pour ne pas coller Cécile au bord */}
-                    <div className="w-4 shrink-0" />
                 </div>
             </div>
         </main>

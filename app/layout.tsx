@@ -5,15 +5,15 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
-  title: "Radio Oxygène - La Radio des Alpes",
-  description: "Écoutez Radio Oxygène en direct. Actualités, musique et infos locales des Alpes.",
+  title: "Radio MMI - La Radio Étudiante",
+  description: "Écoutez Radio MMI en direct. Vie du campus, projets et actus.",
   icons: {
     icon: '/icon.ico',
   },
   metadataBase: new URL('https://radiooxygene.com'), // Placeholder, should be updated
   openGraph: {
-    title: "Radio Oxygène",
-    description: "La Radio des Alpes",
+    title: "Radio MMI",
+    description: "La Radio Étudiante",
     locale: "fr_FR",
     type: "website",
   },

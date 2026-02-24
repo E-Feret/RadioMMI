@@ -4,24 +4,24 @@ import { ArrowRight, Calendar } from "lucide-react";
 const NEWS = [
     {
         id: 1,
-        title: "Circulation difficile sur l'A6 à hauteur de Melun",
-        excerpt: "Un accident implique deux véhicules dans le sens Paris-Province. Prudence si vous circulez dans le secteur.",
+        title: "Soutenance de Projet Tuteuré : Les 2e années présentent !",
+        excerpt: "Venez découvrir les projets de fin de semestre des étudiants en BUT MMI 2. Des innovations incroyables au programme.",
         date: "4 Déc 2025",
-        category: "Info Route",
+        category: "Projets Tech",
     },
     {
         id: 2,
-        title: "Festival de Jazz à Fontainebleau : La billetterie est ouverte",
-        excerpt: "Le célèbre festival revient cet été dans les jardins du château. Découvrez les têtes d'affiche de cette édition.",
+        title: "Festival du Court-Métrage Étudiant : Soirée de clôture",
+        excerpt: "L'association audiovisuelle vous invite à la projection des meilleurs films réalisés cette année. Entrée libre.",
         date: "3 Déc 2025",
-        category: "Culture",
+        category: "Sorties culturelles",
     },
     {
         id: 3,
-        title: "Météo : Vigilance jaune orages en Seine-et-Marne",
-        excerpt: "Météo France annonce des orages violents en fin d'après-midi sur l'ensemble du département.",
+        title: "Tournoi e-sport inter-promos : Inscriptions ouvertes",
+        excerpt: "Préparez vos manettes, le tournoi annuel Super Smash Bros Ultimate aura lieu jeudi prochain dans le hall.",
         date: "2 Déc 2025",
-        category: "Météo",
+        category: "Vie du Campus",
     },
 ];
 
@@ -30,7 +30,7 @@ export default function NewsList() {
         <section className="mb-12">
             <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-oxy-blue dark:text-white">
-                    Actualités Locales
+                    Dernières Actus MMI
                 </h2>
                 <Link href="/actus" className="text-sm font-medium text-oxy-orange hover:text-oxy-orange/80 hover:underline">
                     Toutes les news

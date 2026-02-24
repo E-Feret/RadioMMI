@@ -18,10 +18,9 @@ const NAVI_LINKS = [
         label: "Actualités",
         href: "/actus",
         submenu: [
-            { label: "Melun", href: "/actus/melun" },
-            { label: "Meaux", href: "/actus/meaux" },
-            { label: "Provins", href: "/actus/provins" },
-            { label: "Sud 77", href: "/actus/sud-77" },
+            { label: "Vie du Campus", href: "/actus/campus" },
+            { label: "Projets Tech", href: "/actus/tech" },
+            { label: "Sorties Culturelles", href: "/actus/culture" },
         ]
     },
     { label: "Émissions", href: "/emissions" },
@@ -31,7 +30,7 @@ const NAVI_LINKS = [
     { label: "Jeux", href: "/jeux" },
     { label: "Agenda", href: "/agenda" },
     { label: "Contact", href: "/contact" },
-    { label: "Fréquences", href: "/frequences" },
+    { label: "Nos Flux", href: "/frequences" },
 ];
 
 export default function Navbar() {
@@ -78,18 +77,18 @@ export default function Navbar() {
                     {/* Logo */}
                     <div className="flex-shrink-0 flex items-center z-50">
                         <Link href="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
-                            <div className="relative w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform duration-300">
+                            <div className="relative w-20 h-20 bg-transparent flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                 <Image
-                                    src="/assets/logo/logo.webp"
-                                    alt="Oxygène Logo"
-                                    width={32}
-                                    height={32}
+                                    src="/assets/logo/logo.svg"
+                                    alt="Radio MMI Logo"
+                                    width={64}
+                                    height={64}
                                     className="object-contain"
                                     priority
                                 />
                             </div>
                             <span className="text-xl font-black text-white tracking-tighter italic group-hover:text-oxy-orange transition-colors">
-                                OXYGÈNE
+                                RADIO MMI
                             </span>
                         </Link>
                     </div>

@@ -15,54 +15,50 @@ export default function Footer() {
                 <div className="space-y-6">
                     <div className="space-y-4">
                         <div className="relative w-32 h-12">
-                            <Image src="/assets/logo/logo.webp" alt="Radio Oxygène" fill className="object-contain object-left" />
+                            <Image src="/assets/logo/logo.svg" alt="Radio MMI" fill className="object-contain object-left" />
                         </div>
                         <p className="text-white/90 text-sm leading-relaxed">
-                            Contact Oxygène la radio de la Seine-et-Marne
+                            Contactez Radio MMI, la webradio du département MMI.
                         </p>
                     </div>
 
                     <div className="space-y-2 text-sm text-white/80">
                         <p><span className="text-oxy-orange font-bold">Standard Jeux :</span> 01 60 96 23 16</p>
-                        <p><span className="text-oxy-orange font-bold">Email :</span> info@radiooxygene.fr</p>
+                        <p><span className="text-oxy-orange font-bold">Email :</span> contact@radiommi.fr</p>
                     </div>
                 </div>
 
                 {/* COL 2: AGENCES (ADRESSES) */}
                 <div>
-                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Nos Agences</h3>
+                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Notre Studio</h3>
                     <div className="space-y-6 text-sm text-white/80">
                         <div>
-                            <p className="font-bold text-white mb-1">Agence de Melun</p>
-                            <p>16C Boulevard Chamblain</p>
-                            <p>77000 MELUN</p>
-                        </div>
-                        <div>
-                            <p className="font-bold text-white mb-1">Agence de Meaux</p>
-                            <p>32 Av. Jean Bureau</p>
-                            <p>77100 MEAUX</p>
+                            <p className="font-bold text-white mb-1">Troyes Champagne Métropole</p>
+                            <p>IUT de Troyes - Département MMI</p>
+                            <p>9 Rue de Québec</p>
+                            <p>10000 TROYES</p>
                         </div>
                     </div>
                 </div>
 
-                {/* COL 3: CONTACTS COMMERCIAUX */}
+                {/* COL 3: CONTACTS MMI */}
                 <div>
-                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Contacts Pub</h3>
+                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Contacts MMI</h3>
                     <div className="space-y-4 text-sm text-white/80">
                         <div>
-                            <p className="font-bold text-white text-xs uppercase mb-1">Meaux & Nord 77</p>
-                            <p>Charlène BOSSAERT</p>
-                            <a href="mailto:charlene@radiooxygene.fr" className="text-oxy-orange hover:underline block">charlene@radiooxygene.fr</a>
+                            <p className="font-bold text-white text-xs uppercase mb-1">Direction du Département</p>
+                            <p>Romain DELON</p>
+                            <a href="mailto:romain.delon@univ-reims.fr" className="text-oxy-orange hover:underline block">romain.delon@univ-reims.fr</a>
                         </div>
                         <div>
-                            <p className="font-bold text-white text-xs uppercase mb-1">Coulommiers & Provins</p>
-                            <p>Sébastien LATTANZIO</p>
-                            <a href="mailto:sebastien@radiooxygene.fr" className="text-oxy-orange hover:underline block">sebastien@radiooxygene.fr</a>
+                            <p className="font-bold text-white text-xs uppercase mb-1">Direction de l'IUT</p>
+                            <p>Martial MARTIN</p>
+                            <a href="mailto:martial.martin@univ-reims.fr" className="text-oxy-orange hover:underline block">martial.martin@univ-reims.fr</a>
                         </div>
                         <div>
-                            <p className="font-bold text-white text-xs uppercase mb-1">Melun & Sud 77</p>
-                            <p>Alexandra BEAULIEU</p>
-                            <a href="mailto:alexandra@radiooxygene.fr" className="text-oxy-orange hover:underline block">alexandra@radiooxygene.fr</a>
+                            <p className="font-bold text-white text-xs uppercase mb-1">Studio & Prêt Audiovisuel</p>
+                            <p>Kyllian BRESSON</p>
+                            <a href="mailto:kyllian.bresson@univ-reims.fr" className="text-oxy-orange hover:underline block">kyllian.bresson@univ-reims.fr</a>
                         </div>
                     </div>
                 </div>
@@ -88,7 +84,7 @@ export default function Footer() {
             {/* COPYRIGHT */}
             <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center">
                 <p className="text-white/60 text-sm">
-                    &copy; {new Date().getFullYear()} Radio Oxygène. Tous droits réservés.
+                    &copy; {new Date().getFullYear()} Radio MMI. Tous droits réservés.
                 </p>
             </div>
         </footer>

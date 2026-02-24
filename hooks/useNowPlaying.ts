@@ -15,9 +15,9 @@ interface NowPlayingState {
 }
 
 const DEFAULT_TRACK: Track = {
-    artist: "Radio Oxygène",
-    title: "Le son de la Seine-et-Marne",
-    cover: "/assets/logo-oxygene.png",
+    artist: "Radio MMI",
+    title: "Le son du département MMI",
+    cover: "/assets/logo/logo.svg",
 };
 
 const MOCK_TRACKS: Track[] = [

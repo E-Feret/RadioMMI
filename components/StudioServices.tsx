@@ -5,30 +5,24 @@ import { CloudSun, MessageCircle, ChevronDown, Wind, Car, Mic, Sun, Cloud, Cloud
 
 // Types
 type ViewType = 'METEO' | 'AIR' | 'TRAFIC';
-type City = 'Melun' | 'Fontainebleau' | 'Meaux' | 'Provins' | 'Coulommiers' | 'Nemours' | 'Montereau';
+type City = 'Troyes (Centre)' | 'Campus (Lombards)' | 'Sainte-Savine' | 'TCM';
 
-const CITIES: City[] = ['Melun', 'Fontainebleau', 'Meaux', 'Provins', 'Coulommiers', 'Nemours', 'Montereau'];
+const CITIES: City[] = ['Troyes (Centre)', 'Campus (Lombards)', 'Sainte-Savine', 'TCM'];
 
 // 1. Configuration des Coordonnées
 const CITY_COORDS: Record<City, { lat: number; lon: number }> = {
-    Melun: { lat: 48.5397, lon: 2.6599 },
-    Fontainebleau: { lat: 48.4093, lon: 2.7016 },
-    Meaux: { lat: 48.9603, lon: 2.8884 },
-    Provins: { lat: 48.5601, lon: 3.2992 },
-    Coulommiers: { lat: 48.8139, lon: 3.0841 },
-    Nemours: { lat: 48.2696, lon: 2.6946 },
-    Montereau: { lat: 48.3879, lon: 2.9593 },
+    'Troyes (Centre)': { lat: 48.2973, lon: 4.0744 },
+    'Campus (Lombards)': { lat: 48.2838, lon: 4.0811 },
+    'Sainte-Savine': { lat: 48.2933, lon: 4.0536 },
+    'TCM': { lat: 48.2973, lon: 4.0744 },
 };
 
 // Traffic Data (Simulated as no free API exists for precise local traffic)
 const TRAFFIC_DATA: Record<City, { axe: string; status: string; color: string }[]> = {
-    Melun: [{ axe: 'A5 vers Paris', status: 'Chargé', color: 'text-orange-500' }],
-    Fontainebleau: [{ axe: 'N7 vers Paris', status: 'Fluide', color: 'text-green-500' }],
-    Meaux: [{ axe: 'A4 vers Paris', status: 'Ralenti', color: 'text-orange-500' }],
-    Provins: [{ axe: 'N4 vers Paris', status: 'Fluide', color: 'text-green-500' }],
-    Coulommiers: [{ axe: 'D934', status: 'Fluide', color: 'text-green-500' }],
-    Nemours: [{ axe: 'A6 vers Paris', status: 'Fluide', color: 'text-green-500' }],
-    Montereau: [{ axe: 'A5 vers Troyes', status: 'Fluide', color: 'text-green-500' }],
+    'Troyes (Centre)': [{ axe: 'Bouchon de Champagne', status: 'Chargé', color: 'text-orange-500' }, { axe: 'Rocade', status: 'Fluide', color: 'text-green-500' }],
+    'Campus (Lombards)': [{ axe: 'Rue de Québec', status: 'Fluide', color: 'text-green-500' }],
+    'Sainte-Savine': [{ axe: 'Avenue Gallieni', status: 'Ralenti', color: 'text-orange-500' }],
+    'TCM': [{ axe: 'Rocade Ouest', status: 'Fluide', color: 'text-green-500' }, { axe: 'A26 vers Paris', status: 'Fluide', color: 'text-green-500' }],
 };
 
 interface WeatherData {
@@ -40,7 +34,7 @@ interface WeatherData {
 
 export default function StudioServices() {
     const [activeTab, setActiveTab] = useState<ViewType>('METEO');
-    const [selectedCity, setSelectedCity] = useState<City>('Melun');
+    const [selectedCity, setSelectedCity] = useState<City>('Troyes (Centre)');
     const [isPaused, setIsPaused] = useState(false);
 
     // Data State

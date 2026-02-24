@@ -32,7 +32,7 @@ export default function PageConstruction() {
                     Fréquence en cours de réglage...
                 </h1>
                 <p className="text-white/80 text-lg mb-8 leading-relaxed">
-                    Cette section arrive très bientôt sur le nouveau site Radio Oxygène.
+                    Cette section arrive très bientôt sur le nouveau site Radio MMI.
                 </p>
 
                 {/* Back Button */}

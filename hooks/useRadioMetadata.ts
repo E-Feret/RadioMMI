@@ -11,7 +11,7 @@ interface RadioMetadata {
 export function useRadioMetadata() {
     const [metadata, setMetadata] = useState<RadioMetadata>({
         title: "Chargement...",
-        artist: "Radio Oxygène",
+        artist: "Radio MMI",
         cover: "https://images.unsplash.com/photo-1478737270239-2f02b77ac6d5?q=80&w=200&auto=format&fit=crop" // Default placeholder
     });
 
