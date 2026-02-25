@@ -73,7 +73,7 @@ export default function LiveCTA() {
             <div className="absolute bottom-6 left-1/2 -translate-x-1/2">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-black/20 backdrop-blur-md rounded-full text-white text-xs font-bold border border-white/10">
                     <Radio className="w-3 h-3" />
-                    98.5 FM
+                    online
                 </span>
             </div>
         </div>

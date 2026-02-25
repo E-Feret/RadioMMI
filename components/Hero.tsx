@@ -27,7 +27,7 @@ export default function Hero() {
                         Le Réveil MMI
                     </h1>
                     <p className="text-2xl text-neutral-200 mb-10 font-medium max-w-2xl leading-relaxed">
-                        Avec Thomas et Sarah • 6h - 10h
+                        Avec Audric et Marius • 6h - 10h
                     </p>
 
                     <button className="group flex items-center gap-4 px-8 py-4 bg-white text-secondary rounded-full font-bold text-lg hover:bg-neutral-100 transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl">

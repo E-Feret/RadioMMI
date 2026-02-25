@@ -23,8 +23,8 @@ export default function Footer() {
                     </div>
 
                     <div className="space-y-2 text-sm text-white/80">
-                        <p><span className="text-oxy-orange font-bold">Standard Jeux :</span> 01 60 96 23 16</p>
-                        <p><span className="text-oxy-orange font-bold">Email :</span> contact@radiommi.fr</p>
+                        <p><span className="text-oxy-orange font-bold">Email :</span> <a href="mailto:contact@radiommi.fr" className="hover:underline">contact@radiommi.fr</a></p>
+                        <p><span className="text-oxy-orange font-bold">WhatsApp :</span> <a href="https://wa.me/33632320156" target="_blank" rel="noopener noreferrer" className="hover:underline">+33 6 32 32 01 56</a></p>
                     </div>
                 </div>
 

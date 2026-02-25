@@ -38,9 +38,35 @@ export default function HomeCarousel() {
         setCurrentIndex((prev) => (prev === 0 ? CAROUSEL_SLIDES.length - 1 : prev - 1));
     };
 
+    const [touchStart, setTouchStart] = useState<number | null>(null);
+    const [touchEnd, setTouchEnd] = useState<number | null>(null);
+    const minSwipeDistance = 50;
+
+    const onTouchStart = (e: React.TouchEvent) => {
+        setTouchEnd(null);
+        setTouchStart(e.targetTouches[0].clientX);
+    };
+
+    const onTouchMove = (e: React.TouchEvent) => {
+        setTouchEnd(e.targetTouches[0].clientX);
+    };
+
+    const onTouchEnd = () => {
+        if (!touchStart || !touchEnd) return;
+        const distance = touchStart - touchEnd;
+        if (distance > minSwipeDistance) nextSlide();
+        if (distance < -minSwipeDistance) prevSlide();
+    };
+
     return (
         // J'ai remplacé bg-slate-900 par bg-oxy-blue pour la cohérence charte
-        <div className="relative w-full aspect-video overflow-hidden rounded-3xl bg-oxy-blue group shadow-lg" suppressHydrationWarning={true}>
+        <div
+            className="relative w-full aspect-video overflow-hidden rounded-3xl bg-oxy-blue group shadow-lg"
+            suppressHydrationWarning={true}
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+        >
             {CAROUSEL_SLIDES.map((slide, index) => {
                 // Optimisation : On ne monte dans le DOM que le slide actif (et le précédent/suivant pour la transition si besoin, mais ici simple)
                 if (index !== currentIndex) return null;

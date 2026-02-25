@@ -36,7 +36,7 @@ export default function RootLayout({
       <body className={`${inter.variable} font-sans antialiased flex flex-col min-h-screen`} suppressHydrationWarning={true}>
         <AudioProvider>
           <Navbar />
-          <main className="flex-grow pb-20">
+          <main className="flex-grow pb-0">
             {children}
           </main>
           <Footer />

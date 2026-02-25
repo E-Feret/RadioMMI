@@ -4,7 +4,7 @@ import { MapPin, Phone, Mail, Send } from "lucide-react";
 
 export default function ContactPage() {
     return (
-        <main className="min-h-screen pt-24 pb-12 px-4 md:px-8">
+        <main className="min-h-screen pt-24 pb-0 px-4 md:px-8 bg-neutral-950/90">
             <div className="max-w-7xl mx-auto">
                 <h1 className="text-4xl md:text-5xl font-black text-white mb-8 text-center uppercase tracking-tight">
                     Contactez <span className="text-oxy-orange">MMI</span>
@@ -36,7 +36,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <p className="text-white font-bold">Standard</p>
-                                        <p className="text-white/70">01 64 37 35 19</p>
+                                        <p className="text-white/70"> <a href="tel:0164373519" className="hover:underline" target="_blank" rel="noopener noreferrer">01 64 37 35 19</a></p>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-4">
@@ -45,7 +45,7 @@ export default function ContactPage() {
                                     </div>
                                     <div>
                                         <p className="text-white font-bold">Email</p>
-                                        <p className="text-white/70">contact@radiommi.fr</p>
+                                        <p className="text-white/70"> <a href="mailto:contact@radiommi.fr" className="hover:underline" target="_blank" rel="noopener noreferrer">contact@radiommi.fr</a></p>
                                     </div>
                                 </div>
                             </div>

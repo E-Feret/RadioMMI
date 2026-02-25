@@ -13,7 +13,6 @@ import { Anton } from 'next/font/google';
 const anton = Anton({ weight: '400', subsets: ['latin'], display: 'swap' });
 
 const NAVI_LINKS = [
-    { label: "Accueil", href: "/" },
     {
         label: "Actualités",
         href: "/actus",
@@ -23,14 +22,17 @@ const NAVI_LINKS = [
             { label: "Sorties Culturelles", href: "/actus/culture" },
         ]
     },
-    { label: "Émissions", href: "/emissions" },
-    { label: "Podcasts", href: "/podcasts" },
-    { label: "Vidéos", href: "/videos" },
+    {
+        label: "Programmes",
+        href: "/programmes",
+        submenu: [
+            { label: "Émissions", href: "/emissions" },
+            { label: "Podcasts", href: "/podcasts" },
+        ]
+    },
     { label: "Équipe", href: "/equipe" },
-    { label: "Jeux", href: "/jeux" },
     { label: "Agenda", href: "/agenda" },
     { label: "Contact", href: "/contact" },
-    { label: "Nos Flux", href: "/frequences" },
 ];
 
 export default function Navbar() {
@@ -74,65 +76,69 @@ export default function Navbar() {
         >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
                 <div className="flex items-center justify-between h-full">
-                    {/* Logo */}
+                    {/* Logo - Aligné à gauche avec le contenu principal */}
                     <div className="flex-shrink-0 flex items-center z-50">
                         <Link href="/" className="flex items-center gap-2 group" onClick={() => setIsMobileMenuOpen(false)}>
-                            <div className="relative w-20 h-20 bg-transparent flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                            <div className="relative w-16 h-16 bg-transparent flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                 <Image
                                     src="/assets/logo/logo.svg"
                                     alt="Radio MMI Logo"
-                                    width={64}
-                                    height={64}
+                                    width={56}
+                                    height={56}
                                     className="object-contain"
                                     priority
                                 />
                             </div>
-                            <span className="text-xl font-black text-white tracking-tighter italic group-hover:text-oxy-orange transition-colors">
+                            <span className="text-xl font-black text-white tracking-tighter italic group-hover:text-oxy-orange transition-colors hidden sm:block">
                                 RADIO MMI
                             </span>
                         </Link>
                     </div>
 
-                    {/* Desktop Menu */}
-                    <div className="hidden lg:flex items-center gap-4">
-                        {NAVI_LINKS.map((link) => (
-                            <div key={link.label} className="relative group">
-                                <Link
-                                    href={link.href}
-                                    className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all flex items-center gap-1 ${isActive(link.href)
-                                        ? "text-oxy-orange bg-white/10"
-                                        : "text-white/90 hover:text-oxy-orange hover:bg-white/10"
-                                        }`}
-                                    onMouseEnter={() => setHoveredItem(link.label)}
-                                >
-                                    {link.label}
-                                    {link.submenu && (
-                                        <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${hoveredItem === link.label ? "rotate-180" : ""}`} />
-                                    )}
-                                </Link>
-
-                                {/* Mega Menu Overlay */}
-                                {link.submenu && hoveredItem === link.label && (
-                                    <div
-                                        className="absolute top-full left-0 w-[600px] pt-4"
-                                        onMouseLeave={() => setHoveredItem(null)}
+                    {/* Desktop Right Group: Menu + CTA */}
+                    <div className="hidden lg:flex items-center gap-2 xl:gap-4 ml-auto z-40">
+                        {/* Nav Items */}
+                        <div className="flex items-center gap-1">
+                            {NAVI_LINKS.map((link) => (
+                                <div key={link.label} className="relative group">
+                                    <Link
+                                        href={link.href}
+                                        className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all flex items-center gap-1 ${isActive(link.href)
+                                            ? "text-oxy-orange bg-white/10"
+                                            : "text-white/90 hover:text-oxy-orange hover:bg-white/10"
+                                            }`}
+                                        onMouseEnter={() => setHoveredItem(link.label)}
                                     >
-                                        <MegaMenuOverlay
-                                            isOpen={true}
-                                            items={link.submenu}
-                                            category={link.label}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                                        {link.label}
+                                        {link.submenu && (
+                                            <ChevronDown className={`w-3 h-3 transition-transform duration-300 ${hoveredItem === link.label ? "rotate-180" : ""}`} />
+                                        )}
+                                    </Link>
 
-                    {/* CTA Button */}
-                    <div className="hidden lg:flex items-center">
+                                    {/* Mega Menu Overlay (Right aligned to prevent overflow) */}
+                                    {link.submenu && hoveredItem === link.label && (
+                                        <div
+                                            className="absolute top-full right-0 w-[500px] pt-4"
+                                            onMouseLeave={() => setHoveredItem(null)}
+                                        >
+                                            <MegaMenuOverlay
+                                                isOpen={true}
+                                                items={link.submenu}
+                                                category={link.label}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </div>
+
+                        {/* Divider */}
+                        <div className="w-px h-6 bg-white/20 hidden xl:block"></div>
+
+                        {/* CTA Button */}
                         <button
                             onClick={togglePlay}
-                            className="flex items-center gap-2 px-4 py-1.5 bg-oxy-orange text-white rounded-full text-xs font-bold hover:bg-oxy-orange/90 transition-all transform hover:scale-105 shadow-lg shadow-oxy-orange/20 group"
+                            className="flex items-center gap-2 px-5 py-2 bg-oxy-orange text-white rounded-full text-sm font-bold hover:bg-oxy-orange/90 transition-all transform hover:scale-105 shadow-lg shadow-oxy-orange/20 group"
                         >
                             {isPlaying ? (
                                 <div className="w-3 h-3 flex items-center justify-center">

@@ -37,11 +37,11 @@ export default function NewsList() {
                 </Link>
             </div>
 
-            <div className="grid grid-cols-1 gap-6">
+            <div className="flex overflow-x-auto snap-x snap-mandatory gap-6 pb-4 sm:grid sm:grid-cols-1 md:overflow-x-visible md:snap-none md:pb-0 scrollbar-hide">
                 {NEWS.map((item) => (
                     <article
                         key={item.id}
-                        className="flex flex-col md:flex-row md:items-center justify-between p-8 bg-white dark:bg-neutral-900 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group cursor-pointer border border-neutral-100 dark:border-neutral-800 hover:-translate-y-1"
+                        className="min-w-[85vw] sm:min-w-0 snap-center flex flex-col md:flex-row md:items-center justify-between p-8 bg-white dark:bg-neutral-900 rounded-3xl shadow-sm hover:shadow-xl hover:shadow-primary/5 transition-all duration-300 group cursor-pointer border border-neutral-100 dark:border-neutral-800 hover:-translate-y-1"
                     >
                         <div className="flex-1 mb-6 md:mb-0 md:mr-8">
                             <div className="flex items-center gap-4 mb-3">
@@ -61,7 +61,7 @@ export default function NewsList() {
                             </p>
                         </div>
 
-                        <div className="flex-shrink-0">
+                        <div className="flex-shrink-0 self-end md:self-auto">
                             <span className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-neutral-50 dark:bg-neutral-800 text-secondary/40 group-hover:text-white group-hover:bg-primary transition-all duration-300 transform group-hover:scale-110 group-hover:rotate-[-45deg]">
                                 <ArrowRight className="w-6 h-6" />
                             </span>
