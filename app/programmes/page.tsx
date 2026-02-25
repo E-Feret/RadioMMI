@@ -1,59 +1,6 @@
 import Link from "next/link";
 import { Play, Mic, Headphones, ChevronRight, TrendingUp, Clock, Disc3 } from "lucide-react";
-
-const LATEST_EMISSIONS = [
-    {
-        id: 1,
-        title: "Le Réveil MMI - Spéciale Nuit des SAE",
-        animateur: "Audric & Marius",
-        date: "Ce matin",
-        duration: "03:45:00",
-        image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 2,
-        title: "TechTalk : Les nouveautés d'Apple",
-        animateur: "Sarah & Léo",
-        date: "Hier",
-        duration: "01:20:00",
-        image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-        id: 3,
-        title: "Campus Vibes - Émission de rentrée",
-        animateur: "Équipe MMI",
-        date: "Lundi dernier",
-        duration: "02:00:00",
-        image: "https://images.unsplash.com/photo-1516280440502-869260a9fcc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"
-    }
-];
-
-const LATEST_PODCASTS = [
-    {
-        id: 101,
-        title: "Créer son agence web à 20 ans",
-        serie: "Entreprendre en MMI",
-        date: "Hier",
-        duration: "45 min",
-        image: "https://images.unsplash.com/photo-1589903308904-1010c2294adc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-        id: 102,
-        title: "Le son au cinéma : Décryptage",
-        serie: "Ciné & Co",
-        date: "Il y a 3 jours",
-        duration: "55 min",
-        image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-        id: 103,
-        title: "Portfolio : Les erreurs à ne pas faire",
-        serie: "Tips & Tricks",
-        date: "La semaine dernière",
-        duration: "30 min",
-        image: "https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    }
-];
+import { supabase } from "@/lib/supabase";
 
 const TOP_LISTENED = [
     {
@@ -82,7 +29,36 @@ const TOP_LISTENED = [
     }
 ];
 
-export default function ProgrammesPage() {
+export default async function ProgrammesPage() {
+    const { data: programmesData } = await supabase
+        .from('programmes')
+        .select('*')
+        .order('id', { ascending: false });
+
+    const programmes = programmesData || [];
+
+    const { data: settingsData } = await supabase
+        .from('settings')
+        .select('*')
+        .limit(1)
+        .single();
+
+    // Default placeholder images logic
+    const getImage = (index: number) => {
+        const placeholders = [
+            "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1516280440502-869260a9fcc9?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+            "https://images.unsplash.com/photo-1589903308904-1010c2294adc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1511556820780-d912e42b4980?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+        ];
+        return placeholders[index % placeholders.length];
+    };
+
+    const latestEmissions = programmes.filter(p => !p.type?.toLowerCase().includes('podcast')).slice(0, 4);
+    const latestPodcasts = programmes.filter(p => p.type?.toLowerCase().includes('podcast')).slice(0, 4);
+
     return (
         <main className="min-h-screen pt-24 pb-0 px-4 md:px-8 bg-neutral-950/90">
             {/* Header Section */}
@@ -117,34 +93,40 @@ export default function ProgrammesPage() {
                             <Link href="/emissions" className="text-sm font-bold text-white/50 hover:text-oxy-orange transition-colors">Voir tout</Link>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            {LATEST_EMISSIONS.map((emission) => (
-                                <article key={emission.id} className="group flex flex-col bg-neutral-900 rounded-3xl border border-white/10 overflow-hidden hover:border-oxy-orange/50 transition-all hover:-translate-y-1 shadow-xl cursor-pointer">
-                                    <div className="relative aspect-video overflow-hidden">
-                                        <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
-                                        <img src={emission.image} alt={emission.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                        {latestEmissions.length > 0 ? (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                {latestEmissions.map((emission: any, index: number) => (
+                                    <article key={emission.id} className="group flex flex-col bg-neutral-900 rounded-3xl border border-white/10 overflow-hidden hover:border-oxy-orange/50 transition-all hover:-translate-y-1 shadow-xl cursor-pointer">
+                                        <div className="relative aspect-video overflow-hidden">
+                                            <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors z-10"></div>
+                                            <img src={getImage(index)} alt={emission.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
 
-                                        {/* Play Button Overlay */}
-                                        <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <div className="w-16 h-16 rounded-full bg-oxy-orange text-white flex items-center justify-center shadow-[0_0_30px_rgba(255,102,0,0.5)] transform scale-75 group-hover:scale-100 transition-all duration-300">
-                                                <Play className="w-8 h-8 fill-current ml-1" />
+                                            {/* Play Button Overlay */}
+                                            <div className="absolute inset-0 z-20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <div className="w-16 h-16 rounded-full bg-oxy-orange text-white flex items-center justify-center shadow-[0_0_30px_rgba(255,102,0,0.5)] transform scale-75 group-hover:scale-100 transition-all duration-300">
+                                                    <Play className="w-8 h-8 fill-current ml-1" />
+                                                </div>
+                                            </div>
+
+                                            <div className="absolute bottom-3 right-3 z-30">
+                                                <span className="px-2 py-1 bg-black/80 backdrop-blur-md text-white text-xs font-bold border border-white/20 rounded-md flex items-center gap-1.5">
+                                                    <Clock className="w-3 h-3" /> {emission.duration || '00:00'}
+                                                </span>
                                             </div>
                                         </div>
-
-                                        <div className="absolute bottom-3 right-3 z-30">
-                                            <span className="px-2 py-1 bg-black/80 backdrop-blur-md text-white text-xs font-bold border border-white/20 rounded-md flex items-center gap-1.5">
-                                                <Clock className="w-3 h-3" /> {emission.duration}
-                                            </span>
+                                        <div className="p-6">
+                                            <h3 className="text-xl font-bold text-white mb-2 group-hover:text-oxy-orange transition-colors line-clamp-2">{emission.title}</h3>
+                                            <p className="text-white/60 text-sm mb-4">Animé par <span className="font-bold text-white/80">{emission.hosts || 'l\'équipe'}</span></p>
+                                            <p className="text-xs text-oxy-orange font-bold uppercase tracking-wider">{emission.nextDate || 'Récemment'}</p>
                                         </div>
-                                    </div>
-                                    <div className="p-6">
-                                        <h3 className="text-xl font-bold text-white mb-2 group-hover:text-oxy-orange transition-colors line-clamp-2">{emission.title}</h3>
-                                        <p className="text-white/60 text-sm mb-4">Animé par <span className="font-bold text-white/80">{emission.animateur}</span></p>
-                                        <p className="text-xs text-oxy-orange font-bold uppercase tracking-wider">{emission.date}</p>
-                                    </div>
-                                </article>
-                            ))}
-                        </div>
+                                    </article>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="p-8 text-center bg-neutral-900 rounded-2xl border border-white/10 text-white/50">
+                                Aucune émission disponible
+                            </div>
+                        )}
                     </section>
 
                     {/* Ligne Séparatrice */}
@@ -162,31 +144,37 @@ export default function ProgrammesPage() {
                             <Link href="/podcasts" className="text-sm font-bold text-white/50 hover:text-purple-400 transition-colors">Voir tout</Link>
                         </div>
 
-                        <div className="flex flex-col gap-4">
-                            {LATEST_PODCASTS.map((podcast) => (
-                                <article key={podcast.id} className="group flex items-center bg-neutral-900/50 hover:bg-neutral-900 border border-transparent hover:border-white/10 p-4 rounded-3xl transition-all cursor-pointer">
-                                    <div className="relative w-24 h-24 flex-shrink-0 rounded-2xl overflow-hidden shadow-lg mr-6">
-                                        <img src={podcast.image} alt={podcast.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                                        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-                                            <Play className="w-8 h-8 text-white fill-current" />
+                        {latestPodcasts.length > 0 ? (
+                            <div className="flex flex-col gap-4">
+                                {latestPodcasts.map((podcast: any, index: number) => (
+                                    <article key={podcast.id} className="group flex items-center bg-neutral-900/50 hover:bg-neutral-900 border border-transparent hover:border-white/10 p-4 rounded-3xl transition-all cursor-pointer">
+                                        <div className="relative w-24 h-24 flex-shrink-0 rounded-2xl overflow-hidden shadow-lg mr-6">
+                                            <img src={getImage(10 + index)} alt={podcast.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                            <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                                <Play className="w-8 h-8 text-white fill-current" />
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className="flex-1">
-                                        <span className="text-xs font-bold tracking-wider uppercase text-purple-400 mb-1 block">{podcast.serie}</span>
-                                        <h3 className="text-lg font-bold text-white mb-1 group-hover:text-oxy-orange transition-colors">{podcast.title}</h3>
-                                        <div className="flex items-center gap-4 text-sm text-white/50">
-                                            <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {podcast.date}</span>
-                                            <span className="flex items-center gap-1.5"><Headphones className="w-3.5 h-3.5" /> {podcast.duration}</span>
+                                        <div className="flex-1">
+                                            <span className="text-xs font-bold tracking-wider uppercase text-purple-400 mb-1 block">{podcast.hosts || 'Série MMI'}</span>
+                                            <h3 className="text-lg font-bold text-white mb-1 group-hover:text-oxy-orange transition-colors">{podcast.title}</h3>
+                                            <div className="flex items-center gap-4 text-sm text-white/50">
+                                                <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" /> {podcast.nextDate || 'Récemment'}</span>
+                                                <span className="flex items-center gap-1.5"><Headphones className="w-3.5 h-3.5" /> {podcast.duration || '00:00'}</span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <button className="flex-shrink-0 w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/50 group-hover:text-white group-hover:border-oxy-orange group-hover:bg-oxy-orange/10 transition-colors hidden sm:flex">
-                                        <Play className="w-5 h-5 ml-1" />
-                                    </button>
-                                </article>
-                            ))}
-                        </div>
+                                        <button className="flex-shrink-0 w-12 h-12 rounded-full border border-white/10 flex items-center justify-center text-white/50 group-hover:text-white group-hover:border-oxy-orange group-hover:bg-oxy-orange/10 transition-colors hidden sm:flex">
+                                            <Play className="w-5 h-5 ml-1" />
+                                        </button>
+                                    </article>
+                                ))}
+                            </div>
+                        ) : (
+                            <div className="p-8 text-center bg-neutral-900 rounded-2xl border border-white/10 text-white/50">
+                                Aucun podcast disponible
+                            </div>
+                        )}
                     </section>
 
                 </div>
@@ -201,7 +189,9 @@ export default function ProgrammesPage() {
                             <span className="w-2 h-2 bg-white rounded-full animate-pulse"></span>
                             Direct Studio
                         </h3>
-                        <p className="text-white/90 mb-6 text-sm relative z-10 font-bold">Le Réveil MMI (Audric & Marius)</p>
+                        <p className="text-white/90 mb-6 text-sm relative z-10 font-bold">
+                            {settingsData?.currentShow || "Le Réveil MMI"} ({settingsData?.currentHosts || "Audric & Marius"})
+                        </p>
 
                         <button className="w-full py-3 bg-white text-oxy-orange rounded-xl font-black hover:bg-neutral-100 transition-colors shadow-lg flex items-center justify-center gap-2 relative z-10">
                             <Play className="w-5 h-5 fill-current" />

@@ -41,6 +41,7 @@ export default function Navbar() {
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
     const pathname = usePathname();
     const [scrolled, setScrolled] = useState(false);
+    const isActive = (href: string) => pathname === href;
 
     // Handle scroll effect
     useEffect(() => {
@@ -68,7 +69,7 @@ export default function Navbar() {
         };
     }, [isMobileMenuOpen]);
 
-    const isActive = (href: string) => pathname === href;
+    if (pathname.startsWith("/admin")) return null;
 
     return (
         <nav

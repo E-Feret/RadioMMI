@@ -1,7 +1,18 @@
 import Image from "next/image";
 import { Play } from "lucide-react";
+import { supabase } from "@/lib/supabase";
 
-export default function Hero() {
+export default async function Hero() {
+    // Fetch global settings from supabase
+    const { data: settingsData } = await supabase
+        .from('settings')
+        .select('*')
+        .limit(1)
+        .single();
+
+    const title = settingsData?.currentShow || "Le Réveil MMI";
+    const hosts = settingsData?.currentHosts || "Audric et Marius";
+
     return (
         <section className="relative h-[600px] w-full overflow-hidden rounded-[2.5rem] mb-20 shadow-2xl shadow-primary/20 group">
             {/* Background Image */}
@@ -24,10 +35,10 @@ export default function Hero() {
                         En Direct
                     </span>
                     <h1 className="text-5xl md:text-7xl font-bold text-white mb-4 tracking-tight drop-shadow-lg">
-                        Le Réveil MMI
+                        {title}
                     </h1>
                     <p className="text-2xl text-neutral-200 mb-10 font-medium max-w-2xl leading-relaxed">
-                        Avec Audric et Marius • 6h - 10h
+                        Avec {hosts}
                     </p>
 
                     <button className="group flex items-center gap-4 px-8 py-4 bg-white text-secondary rounded-full font-bold text-lg hover:bg-neutral-100 transition-all transform hover:scale-105 shadow-xl hover:shadow-2xl">

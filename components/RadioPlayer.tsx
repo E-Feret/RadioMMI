@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Play, Pause, Volume2, VolumeX, Loader2, AlertCircle } from "lucide-react";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useNowPlaying } from "@/hooks/useNowPlaying";
 import { useAudio } from "@/context/AudioContext";
 
@@ -12,6 +13,7 @@ export default function RadioPlayer() {
     const [error, setError] = useState(false);
     const audioRef = useRef<HTMLAudioElement>(null);
     const { track, loading: metadataLoading } = useNowPlaying();
+    const pathname = usePathname();
 
     // Creacast Stream URL (HTTPS forced)
     const STREAM_URL = "https://str0.creacast.com/oxy-melun";
@@ -74,6 +76,8 @@ export default function RadioPlayer() {
         setError(true);
         setIsLoading(false);
     };
+
+    if (pathname.startsWith("/admin")) return null;
 
     return (
         <div className="fixed bottom-6 left-4 right-4 md:left-1/2 md:-translate-x-1/2 md:w-full md:max-w-4xl bg-gradient-oxy-blue/95 backdrop-blur-xl border border-white/20 dark:border-neutral-700 shadow-2xl shadow-oxy-blue/20 rounded-3xl z-50 h-24 transition-all duration-300 hover:scale-[1.01]">

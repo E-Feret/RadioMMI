@@ -1,10 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Anton } from 'next/font/google';
+import { usePathname } from "next/navigation";
 
 const anton = Anton({ weight: '400', subsets: ['latin'], display: 'swap' });
 
 export default function Footer() {
+    const pathname = usePathname();
+
+    if (pathname.startsWith("/admin")) return null;
+
     return (
         // AJOUT DE 'pb-32' : On augmente le padding-bottom (pb-8 -> pb-32)
         // Cela crée un espace vide en bas du footer pour que le Player Audio (fixed) ne cache rien.

@@ -1,49 +1,6 @@
 import Link from "next/link";
 import { Calendar, ArrowRight, TrendingUp, Clock, ChevronRight } from "lucide-react";
-
-const FEATURED_NEWS = {
-    id: 1,
-    title: "Lancement de la nouvelle grille des programmes 2026",
-    excerpt: "Découvrez toutes les nouveautés prévues pour cette année sur Radio MMI. De nouvelles voix, de nouveaux formats, et encore plus de direct depuis le studio !",
-    date: "Aujourd'hui, 08:30",
-    category: "Vie du Campus",
-    image: "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80"
-};
-
-const RECENT_NEWS = [
-    {
-        id: 2,
-        title: "Soutenance de Projet Tuteuré : Les 2e années présentent !",
-        excerpt: "Venez découvrir les projets de fin de semestre des étudiants en BUT MMI 2. Des innovations incroyables au programme.",
-        date: "Hier, 14:00",
-        category: "Projets Tech",
-        image: "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-        id: 3,
-        title: "Festival du Court-Métrage Étudiant : Soirée de clôture",
-        excerpt: "L'association audiovisuelle vous invite à la projection des meilleurs films réalisés cette année. Entrée libre.",
-        date: "3 Déc 2025",
-        category: "Sorties culturelles",
-        image: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-        id: 4,
-        title: "Tournoi e-sport inter-promos : Inscriptions ouvertes",
-        excerpt: "Préparez vos manettes, le tournoi annuel Super Smash Bros Ultimate aura lieu jeudi prochain dans le hall.",
-        date: "2 Déc 2025",
-        category: "Vie du Campus",
-        image: "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    },
-    {
-        id: 5,
-        title: "Masterclass sur l'Intelligence Artificielle Générative",
-        excerpt: "Un ancien étudiant de retour à l'IUT pour discuter des bouleversements apportés par l'IA dans la création numérique.",
-        date: "1 Déc 2025",
-        category: "Projets Tech",
-        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
-    }
-];
+import { supabase } from "@/lib/supabase";
 
 const MOST_VIEWED = [
     {
@@ -66,7 +23,31 @@ const MOST_VIEWED = [
     }
 ];
 
-export default function ActusPage() {
+export default async function ActusPage() {
+    // Fetch real data from supabase
+    const { data: actusData } = await supabase
+        .from('actus')
+        .select('*')
+        .eq('status', 'Publié')
+        .order('id', { ascending: false });
+
+    const actus = actusData || [];
+
+    // Default placeholder images logic
+    const getImage = (index: number) => {
+        const placeholders = [
+            "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
+            "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1538481199705-c710c4e965fc?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+            "https://images.unsplash.com/photo-1677442136019-21780ecad995?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80"
+        ];
+        return placeholders[index % placeholders.length];
+    };
+
+    const featuredNews = actus.length > 0 ? actus[0] : null;
+    const recentNews = actus.length > 1 ? actus.slice(1, 10) : []; // limit to 9 recent
+
     return (
         <main className="min-h-screen pt-24 pb-0 px-4 md:px-8 bg-neutral-950/90">
             {/* Header Section */}
@@ -86,57 +67,65 @@ export default function ActusPage() {
                 <div className="w-full lg:w-8/12 flex flex-col gap-8 min-w-0">
 
                     {/* Featured Article */}
-                    <article className="relative group overflow-hidden rounded-3xl bg-neutral-900 border border-white/10 shadow-xl cursor-pointer">
-                        <div className="absolute inset-0 z-0">
-                            <img src={FEATURED_NEWS.image} alt={FEATURED_NEWS.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-50 group-hover:opacity-70" />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                        </div>
-                        <div className="relative z-10 p-8 pt-48 md:pt-64 flex flex-col justify-end min-h-[400px]">
-                            <div className="flex items-center gap-3 mb-4">
-                                <span className="px-3 py-1 bg-oxy-orange text-white text-xs font-bold rounded-full uppercase tracking-wider">{FEATURED_NEWS.category}</span>
-                                <span className="flex items-center text-sm text-white/80 font-medium">
-                                    <Clock className="w-4 h-4 mr-1.5" />
-                                    {FEATURED_NEWS.date}
-                                </span>
+                    {featuredNews ? (
+                        <article className="relative group overflow-hidden rounded-3xl bg-neutral-900 border border-white/10 shadow-xl cursor-pointer">
+                            <div className="absolute inset-0 z-0">
+                                <img src={getImage(0)} alt={featuredNews.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-50 group-hover:opacity-70" />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
                             </div>
-                            <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight group-hover:text-oxy-orange transition-colors">{FEATURED_NEWS.title}</h2>
-                            <p className="text-lg text-white/80 line-clamp-2 md:line-clamp-3 mb-6 max-w-3xl">{FEATURED_NEWS.excerpt}</p>
+                            <div className="relative z-10 p-8 pt-48 md:pt-64 flex flex-col justify-end min-h-[400px]">
+                                <div className="flex items-center gap-3 mb-4">
+                                    <span className="px-3 py-1 bg-oxy-orange text-white text-xs font-bold rounded-full uppercase tracking-wider">{featuredNews.category || 'Actualité'}</span>
+                                    <span className="flex items-center text-sm text-white/80 font-medium">
+                                        <Clock className="w-4 h-4 mr-1.5" />
+                                        {featuredNews.date || 'Récemment'}
+                                    </span>
+                                </div>
+                                <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight group-hover:text-oxy-orange transition-colors">{featuredNews.title}</h2>
+                                <p className="text-lg text-white/80 line-clamp-2 md:line-clamp-3 mb-6 max-w-3xl">Lisez cet article pour en savoir plus sur les dernières annonces de la radio.</p>
 
-                            <div className="inline-flex items-center gap-2 text-white font-bold group-hover:text-oxy-orange transition-colors">
-                                Lire l'article <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                                <div className="inline-flex items-center gap-2 text-white font-bold group-hover:text-oxy-orange transition-colors">
+                                    Lire l'article <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                                </div>
                             </div>
+                        </article>
+                    ) : (
+                        <div className="p-12 text-center bg-neutral-900 rounded-3xl border border-white/10 text-white/50">
+                            Aucune actualité publiée pour le moment.
                         </div>
-                    </article>
+                    )}
 
                     {/* Recent News Grid */}
-                    <div className="mt-4">
-                        <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                            <Clock className="w-6 h-6 text-oxy-orange" /> Les plus récentes
-                        </h2>
-                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                            {RECENT_NEWS.map((news) => (
-                                <article key={news.id} className="group flex flex-col bg-neutral-900 rounded-3xl border border-white/10 overflow-hidden hover:border-oxy-orange/50 transition-colors cursor-pointer">
-                                    <div className="relative h-48 overflow-hidden">
-                                        <img src={news.image} alt={news.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                                        <div className="absolute top-4 left-4">
-                                            <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white/90 border border-white/20 text-xs font-bold rounded-full uppercase">{news.category}</span>
+                    {recentNews.length > 0 && (
+                        <div className="mt-4">
+                            <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                                <Clock className="w-6 h-6 text-oxy-orange" /> Les plus récentes
+                            </h2>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                                {recentNews.map((news: any, index: number) => (
+                                    <article key={news.id} className="group flex flex-col bg-neutral-900 rounded-3xl border border-white/10 overflow-hidden hover:border-oxy-orange/50 transition-colors cursor-pointer">
+                                        <div className="relative h-48 overflow-hidden">
+                                            <img src={getImage(index + 1)} alt={news.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                            <div className="absolute top-4 left-4">
+                                                <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white/90 border border-white/20 text-xs font-bold rounded-full uppercase">{news.category || 'Actualité'}</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className="p-6 flex flex-col flex-1">
-                                        <span className="flex items-center text-xs text-oxy-orange font-medium mb-3">
-                                            <Calendar className="w-3.5 h-3.5 mr-1.5" />
-                                            {news.date}
-                                        </span>
-                                        <h3 className="text-xl font-bold text-white mb-3 group-hover:text-oxy-orange transition-colors line-clamp-2">{news.title}</h3>
-                                        <p className="text-white/60 text-sm line-clamp-3 mb-4 flex-1">{news.excerpt}</p>
-                                        <div className="mt-auto inline-flex items-center text-sm font-bold text-white group-hover:text-oxy-orange">
-                                            Lire la suite <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                                        <div className="p-6 flex flex-col flex-1">
+                                            <span className="flex items-center text-xs text-oxy-orange font-medium mb-3">
+                                                <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                                                {news.date || 'Récemment'}
+                                            </span>
+                                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-oxy-orange transition-colors line-clamp-2">{news.title}</h3>
+                                            <p className="text-white/60 text-sm line-clamp-3 mb-4 flex-1">Lisez notre actualité pour découvrir toutes les informations.</p>
+                                            <div className="mt-auto inline-flex items-center text-sm font-bold text-white group-hover:text-oxy-orange">
+                                                Lire la suite <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                                            </div>
                                         </div>
-                                    </div>
-                                </article>
-                            ))}
+                                    </article>
+                                ))}
+                            </div>
                         </div>
-                    </div>
+                    )}
 
                 </div>
 
