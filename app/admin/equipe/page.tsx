@@ -20,6 +20,7 @@ export default function AdminEquipePage() {
     // Form states
     const [formData, setFormData] = useState({
         name: "",
+        email: "",
         role: "Contributeur",
         show: "",
         isAdmin: false,
@@ -31,7 +32,7 @@ export default function AdminEquipePage() {
     const openAddModal = () => {
         setIsEditing(false);
         setCurrentId(null);
-        setFormData({ name: "", role: "Contributeur", show: "", isAdmin: false, avatar: "" });
+        setFormData({ name: "", email: "", role: "Contributeur", show: "", isAdmin: false, avatar: "" });
         setFile(null);
         setIsModalOpen(true);
     };
@@ -41,6 +42,7 @@ export default function AdminEquipePage() {
         setCurrentId(member.id);
         setFormData({
             name: member.name,
+            email: member.email || "",
             role: member.role || "Contributeur",
             show: member.show || "",
             isAdmin: member.isAdmin || false,
@@ -244,6 +246,17 @@ export default function AdminEquipePage() {
                                         onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                                         className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50"
                                         placeholder="Ex: Jean Dupont"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-sm font-bold text-white/70 mb-2">Adresse E-mail (Importante pour la connexion)</label>
+                                    <input
+                                        type="email"
+                                        required
+                                        value={formData.email}
+                                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-green-400/50"
+                                        placeholder="jean.dupont@webradio.fr"
                                     />
                                 </div>
 

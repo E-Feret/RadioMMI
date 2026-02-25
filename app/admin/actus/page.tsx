@@ -24,7 +24,8 @@ export default function AdminActusPage() {
         status: "Brouillon",
         date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }),
         views: 0,
-        image: ""
+        image: "",
+        content: ""
     });
 
     const [file, setFile] = useState<File | null>(null);
@@ -38,7 +39,8 @@ export default function AdminActusPage() {
             status: "Brouillon",
             date: new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }),
             views: 0,
-            image: ""
+            image: "",
+            content: ""
         });
         setFile(null);
         setIsModalOpen(true);
@@ -53,7 +55,8 @@ export default function AdminActusPage() {
             status: article.status || "Brouillon",
             date: article.date || new Date().toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' }),
             views: article.views || 0,
-            image: article.image || ""
+            image: article.image || "",
+            content: article.content || ""
         });
         setFile(null);
         setIsModalOpen(true);
@@ -343,6 +346,17 @@ export default function AdminActusPage() {
                                             className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-oxy-orange/50"
                                         />
                                     </div>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-bold text-white/70 mb-2">Contenu de l'article</label>
+                                    <textarea
+                                        required
+                                        value={formData.content}
+                                        onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-oxy-orange/50 min-h-[200px] resize-y custom-scrollbar"
+                                        placeholder="Rédigez le contenu de votre article ici..."
+                                    />
                                 </div>
 
                                 <div>

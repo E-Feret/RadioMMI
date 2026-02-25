@@ -25,6 +25,9 @@ export default function AdminEpisodesPage() {
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isEditing, setIsEditing] = useState(false);
+    const [file, setFile] = useState<File | null>(null);
+    const [audioFile, setAudioFile] = useState<File | null>(null);
+    const [isUploadingAudio, setIsUploadingAudio] = useState(false);
     const [currentId, setCurrentId] = useState<number | null>(null);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -47,6 +50,7 @@ export default function AdminEpisodesPage() {
             duration: "45:00",
             audio_url: ""
         });
+        setAudioFile(null);
         setIsModalOpen(true);
     };
 
@@ -60,15 +64,54 @@ export default function AdminEpisodesPage() {
             duration: ep.duration || "45:00",
             audio_url: ep.audio_url || ""
         });
+        setAudioFile(null);
         setIsModalOpen(true);
+    };
+
+    const handleUploadAudio = async (fileToUpload: File) => {
+        try {
+            setIsUploadingAudio(true);
+            const fileExt = fileToUpload.name.split('.').pop();
+            const fileName = `podcasts/${Math.random()}.${fileExt}`;
+            const filePath = `${fileName}`;
+
+            const { error: uploadError } = await supabase.storage
+                .from('podcasts') // Assume 'podcasts' is the bucket name
+                .upload(filePath, fileToUpload);
+
+            if (uploadError) {
+                console.error("Erreur d'upload audio:", uploadError);
+                alert("Erreur lors du transfert de l'audio. Avez-vous créé le bucket 'podcasts' sur Supabase et configuré ses politiques de sécurité ?");
+                setIsUploadingAudio(false);
+                return null;
+            }
+
+            const { data } = supabase.storage.from('podcasts').getPublicUrl(filePath);
+            setIsUploadingAudio(false);
+            return data.publicUrl;
+        } catch (error) {
+            console.error("Erreur d'upload inattendue:", error);
+            setIsUploadingAudio(false);
+            return null;
+        }
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSaving(true);
 
+        let finalAudioUrl = formData.audio_url;
+
+        if (audioFile) {
+            const uploadedUrl = await handleUploadAudio(audioFile);
+            if (uploadedUrl) {
+                finalAudioUrl = uploadedUrl;
+            }
+        }
+
         const epData = {
             ...formData,
+            audio_url: finalAudioUrl,
             programme_id: parseInt(programmeId, 10)
         };
 
@@ -284,15 +327,43 @@ export default function AdminEpisodesPage() {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-bold text-white/70 mb-2">Lien Audio (URL)</label>
-                                    <input
-                                        type="url"
-                                        value={formData.audio_url}
-                                        onChange={(e) => setFormData({ ...formData, audio_url: e.target.value })}
-                                        className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
-                                        placeholder="https://..."
-                                    />
-                                    <p className="text-xs text-white/40 mt-1">Lien direct vers le fichier MP3 ou autre.</p>
+                                    <label className="block text-sm font-bold text-white/70 mb-2">Fichier Audio (Prioritaire si sélectionné)</label>
+                                    <div className="flex flex-col gap-2">
+                                        <label className="flex items-center justify-center w-full p-4 border-2 border-dashed border-white/20 rounded-xl cursor-pointer hover:bg-white/5 hover:border-purple-500 transition-colors group">
+                                            <div className="flex items-center gap-3">
+                                                <PlayCircle className="w-5 h-5 text-white/40 group-hover:text-purple-500" />
+                                                <span className="text-sm font-bold text-white/60 group-hover:text-purple-500">
+                                                    {audioFile ? audioFile.name : "Cliquez pour uploader un fichier audio (.mp3, .wav)"}
+                                                </span>
+                                            </div>
+                                            <input
+                                                type="file"
+                                                accept="audio/*"
+                                                className="hidden"
+                                                onChange={(e) => {
+                                                    if (e.target.files && e.target.files.length > 0) {
+                                                        setAudioFile(e.target.files[0]);
+                                                    }
+                                                }}
+                                            />
+                                        </label>
+
+                                        <div className="flex items-center gap-2 mt-2">
+                                            <div className="h-[1px] bg-white/10 flex-1"></div>
+                                            <span className="text-xs text-white/30 font-bold uppercase">OU URL EXTERNE</span>
+                                            <div className="h-[1px] bg-white/10 flex-1"></div>
+                                        </div>
+
+                                        <input
+                                            type="url"
+                                            value={formData.audio_url}
+                                            onChange={(e) => setFormData({ ...formData, audio_url: e.target.value })}
+                                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50"
+                                            placeholder="https://..."
+                                            disabled={audioFile !== null}
+                                        />
+                                        <p className="text-xs text-white/40 mt-1">Lien direct vers le fichier MP3 si vous ne l'uploadez pas ici.</p>
+                                    </div>
                                 </div>
                             </form>
                         </div>

@@ -32,6 +32,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const router = useRouter();
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [userContext, setUserContext] = useState<any>(null);
 
     useEffect(() => {
         if (pathname === '/admin/login') {
@@ -43,9 +44,34 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             const { data: { session } } = await supabase.auth.getSession();
             if (!session) {
                 router.push('/admin/login');
-            } else {
-                setIsLoading(false);
+                return;
             }
+
+            // Check if user is in 'equipe' and has isAdmin = true
+            const { data: teamMember, error } = await supabase
+                .from('equipe')
+                .select('*')
+                .eq('isAdmin', true)
+                .limit(100); // Fetch list of admins to see if our user is among them
+
+            const isAdminValid = teamMember?.some(member =>
+                member.email === session.user.email ||
+                // Fallback loosely just in case this is the generic first user and team database is empty
+                (teamMember.length === 0 && session.user.email === "admin@mmi.fr")
+            );
+
+            if (error || (!isAdminValid && teamMember && teamMember.length > 0)) {
+                alert("Accès refusé. Vous n'êtes pas administrateur ou ne faites pas partie de l'équipe.");
+                await supabase.auth.signOut();
+                router.push('/admin/login');
+                return;
+            }
+
+            setUserContext({
+                ...session.user,
+                teamData: teamMember?.find(m => m.email === session.user.email) || null
+            });
+            setIsLoading(false);
         };
 
         checkSession();
@@ -120,12 +146,16 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 {/* User Area Footer */}
                 <div className="p-4 border-t border-white/5">
                     <div className="flex items-center gap-3 px-4 py-3 mb-2 rounded-xl bg-white/5 border border-white/5">
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-oxy-orange to-red-500 flex items-center justify-center text-white font-bold text-sm">
-                            A
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-oxy-orange to-red-500 flex items-center justify-center text-white font-bold text-sm overflow-hidden shrink-0">
+                            {userContext?.teamData?.avatar ? (
+                                <img src={userContext.teamData.avatar} alt="Avatar" className="w-full h-full object-cover" />
+                            ) : (
+                                userContext?.teamData?.name?.[0]?.toUpperCase() || userContext?.email?.[0]?.toUpperCase() || 'A'
+                            )}
                         </div>
                         <div className="flex-1 min-w-0">
-                            <p className="text-sm font-bold text-white truncate">Admin MMI</p>
-                            <p className="text-xs text-white/40 truncate">Webmaster</p>
+                            <p className="text-sm font-bold text-white truncate">{userContext?.teamData?.name || userContext?.email || 'Admin MMI'}</p>
+                            <p className="text-xs text-white/40 truncate">Administrateur</p>
                         </div>
                     </div>
                     <button

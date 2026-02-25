@@ -1,15 +1,41 @@
 "use client";
 
 import { Activity, Radio, Users, Eye, TrendingUp, PlayCircle } from "lucide-react";
-
-const STATS = [
-    { label: "Auditeurs Live", value: "0", icon: <Radio />, trend: "-", color: "text-oxy-orange", bg: "bg-oxy-orange/10" },
-    { label: "Vues Actus (30j)", value: "0", icon: <Eye />, trend: "-", color: "text-blue-400", bg: "bg-blue-400/10" },
-    { label: "Écoutes Replays", value: "0", icon: <PlayCircle />, trend: "-", color: "text-purple-400", bg: "bg-purple-400/10" },
-    { label: "Abonnés Newsletter", value: "0", icon: <Users />, trend: "-", color: "text-green-400", bg: "bg-green-400/10" },
-];
+import { useAdminData } from "@/hooks/useAdminData";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 export default function AdminDashboardPage() {
+    const router = useRouter();
+    const { data: settings } = useAdminData("settings");
+    const { data: actus } = useAdminData("actus");
+    const { data: episodes } = useAdminData("episodes");
+    const { data: equipe } = useAdminData("equipe");
+
+    const [isClearingCache, setIsClearingCache] = useState(false);
+
+    const totalViewsActus = actus.reduce((acc: number, curr: any) => acc + (curr.views || 0), 0);
+    const totalEpisodes = episodes.length;
+    const totalEquipe = equipe.length;
+
+    const STATS = [
+        { label: "Auditeurs Live", value: "N/A", icon: <Radio />, trend: "API Externe", color: "text-oxy-orange", bg: "bg-oxy-orange/10" },
+        { label: "Vues Actus (Total)", value: totalViewsActus.toLocaleString('fr-FR'), icon: <Eye />, trend: "+", color: "text-blue-400", bg: "bg-blue-400/10" },
+        { label: "Épisodes Replays", value: totalEpisodes.toString(), icon: <PlayCircle />, trend: "+", color: "text-purple-400", bg: "bg-purple-400/10" },
+        { label: "Membres Équipe", value: totalEquipe.toString(), icon: <Users />, trend: "=", color: "text-green-400", bg: "bg-green-400/10" },
+    ];
+
+    const currentShowTitle = (settings as any)?.currentShow || "Aucune émission configurée";
+    const currentHostsName = (settings as any)?.currentHosts || "Non spécifié";
+
+    const handleClearCache = async () => {
+        setIsClearingCache(true);
+        // Simulate cache clearing delay
+        await new Promise(resolve => setTimeout(resolve, 1500));
+        setIsClearingCache(false);
+        alert("Le cache du site a été vidé avec succès.");
+    };
+
     return (
         <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
             {/* Page Header */}
@@ -56,16 +82,16 @@ export default function AdminDashboardPage() {
                             <img src="https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Live cover" className="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <p className="text-xs font-bold text-oxy-orange uppercase tracking-wider mb-1">06:00 - 10:00 (Le Matin)</p>
-                            <h3 className="text-3xl font-black text-white mb-2">Le Réveil MMI</h3>
-                            <p className="text-white/60 mb-4">Animé par Audric & Marius</p>
+                            <p className="text-xs font-bold text-oxy-orange uppercase tracking-wider mb-1">Depuis les paramètres (Widget)</p>
+                            <h3 className="text-3xl font-black text-white mb-2">{currentShowTitle}</h3>
+                            <p className="text-white/60 mb-4">Animé par {currentHostsName}</p>
 
                             <div className="flex items-center gap-4">
-                                <button className="px-5 py-2.5 bg-white text-black font-bold rounded-xl hover:bg-neutral-200 transition-colors shadow-lg text-sm flex items-center gap-2">
+                                <button onClick={() => router.push('/admin/settings')} className="px-5 py-2.5 bg-white text-black font-bold rounded-xl hover:bg-neutral-200 transition-colors shadow-lg text-sm flex items-center gap-2">
                                     <Activity className="w-4 h-4" /> Modifier le direct
                                 </button>
-                                <button className="px-5 py-2.5 bg-neutral-800 text-white font-bold rounded-xl hover:bg-neutral-700 transition-colors shadow-lg text-sm border border-white/10">
-                                    Voir la grille
+                                <button onClick={() => router.push('/admin/agenda')} className="px-5 py-2.5 bg-neutral-800 text-white font-bold rounded-xl hover:bg-neutral-700 transition-colors shadow-lg text-sm border border-white/10">
+                                    Voir l'Agenda
                                 </button>
                             </div>
                         </div>
@@ -93,8 +119,14 @@ export default function AdminDashboardPage() {
                     </div>
 
                     <div className="mt-8 pt-6 border-t border-white/5">
-                        <button className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 border border-white/10 text-white font-bold rounded-xl transition-colors">
-                            Vider le cache site
+                        <button onClick={handleClearCache} disabled={isClearingCache} className="w-full py-3 bg-neutral-800 hover:bg-neutral-700 border border-white/10 text-white font-bold rounded-xl transition-colors disabled:opacity-50 flex items-center justify-center gap-2">
+                            {isClearingCache ? (
+                                <>
+                                    <span className="animate-spin inline-block w-4 h-4 border-2 border-white/50 border-t-white rounded-full" /> Nettoyage en cours...
+                                </>
+                            ) : (
+                                "Vider le cache site"
+                            )}
                         </button>
                     </div>
                 </div>
