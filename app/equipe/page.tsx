@@ -13,6 +13,9 @@ export default async function EquipePage() {
         if (!avatar || avatar.trim() === '') {
             return "https://images.unsplash.com/photo-1599566150163-29194dcaad36?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80";
         }
+        // Ensure the protocol is present for safety
+        if (avatar.startsWith('http')) return avatar;
+
         return avatar;
     };
 
@@ -22,7 +25,7 @@ export default async function EquipePage() {
             {/* TITRE */}
             <div className="text-center z-10 mb-8 px-4">
                 <h1 className="text-4xl md:text-5xl font-bold text-white mb-2 drop-shadow-lg uppercase tracking-tight">
-                    LA FAMILLE <span className="text-oxy-orange">MMI</span>
+                    LA FAMILLE <span className="text-oxy-orange">RADIO MMI</span>
                 </h1>
                 <p className="text-white/80 text-sm md:text-base font-medium">
                     Ceux qui font vibrer le département MMI
@@ -68,7 +71,7 @@ export default async function EquipePage() {
                                 {member.isAdmin && (
                                     <div className="text-sm">
                                         <div className="text-oxy-orange/90 font-bold uppercase text-xs mb-1 tracking-wider">Statut</div>
-                                        <div className="italic text-white/90">« Administrateur MMI »</div>
+                                        <div className="italic text-white/90">« Administrateur RADIO MMI »</div>
                                     </div>
                                 )}
                             </div>

@@ -324,7 +324,7 @@ export default function AdminEquipePage() {
                                     />
                                     <div className="flex flex-col">
                                         <span className="text-sm font-bold text-white">Administrateur</span>
-                                        <span className="text-xs text-white/50">Donne l'accès complet au panneau d'administration MMI.</span>
+                                        <span className="text-xs text-white/50">Donne l'accès complet au panneau d'administration RADIO MMI.</span>
                                     </div>
                                 </label>
                             </form>

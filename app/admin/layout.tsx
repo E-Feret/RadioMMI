@@ -12,7 +12,8 @@ import {
     LogOut,
     Menu,
     X,
-    Radio as LucideRadio
+    Radio as LucideRadio,
+    Mail
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -24,6 +25,7 @@ const ADMIN_LINKS = [
     { label: "Agenda (Timeline)", href: "/admin/agenda", icon: <CalendarDays className="w-5 h-5" /> },
     { label: "Programmes", href: "/admin/programmes", icon: <Mic className="w-5 h-5" /> },
     { label: "Équipe", href: "/admin/equipe", icon: <Users className="w-5 h-5" /> },
+    { label: "Newsletter", href: "/admin/newsletter", icon: <Mail className="w-5 h-5" /> },
     { label: "Paramètres", href: "/admin/settings", icon: <Settings className="w-5 h-5" /> },
 ];
 

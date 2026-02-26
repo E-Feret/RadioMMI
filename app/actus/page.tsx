@@ -33,8 +33,8 @@ export default async function ActusPage() {
 
     const actus = actusData || [];
 
-    // Default placeholder images logic
-    const getImage = (index: number) => {
+    const getImage = (item: any, index: number) => {
+        if (item?.image) return item.image;
         const placeholders = [
             "https://images.unsplash.com/photo-1598488035139-bdbb2231ce04?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80",
             "https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
@@ -68,27 +68,29 @@ export default async function ActusPage() {
 
                     {/* Featured Article */}
                     {featuredNews ? (
-                        <article className="relative group overflow-hidden rounded-3xl bg-neutral-900 border border-white/10 shadow-xl cursor-pointer">
-                            <div className="absolute inset-0 z-0">
-                                <img src={getImage(0)} alt={featuredNews.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-50 group-hover:opacity-70" />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                            </div>
-                            <div className="relative z-10 p-8 pt-48 md:pt-64 flex flex-col justify-end min-h-[400px]">
-                                <div className="flex items-center gap-3 mb-4">
-                                    <span className="px-3 py-1 bg-oxy-orange text-white text-xs font-bold rounded-full uppercase tracking-wider">{featuredNews.category || 'Actualité'}</span>
-                                    <span className="flex items-center text-sm text-white/80 font-medium">
-                                        <Clock className="w-4 h-4 mr-1.5" />
-                                        {featuredNews.date || 'Récemment'}
-                                    </span>
+                        <Link href={`/actus/${featuredNews.id}`} className="relative group overflow-hidden rounded-3xl bg-neutral-900 border border-white/10 shadow-xl cursor-pointer block">
+                            <article>
+                                <div className="absolute inset-0 z-0">
+                                    <img src={getImage(featuredNews, 0)} alt={featuredNews.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-50 group-hover:opacity-70" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
                                 </div>
-                                <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight group-hover:text-oxy-orange transition-colors">{featuredNews.title}</h2>
-                                <p className="text-lg text-white/80 line-clamp-2 md:line-clamp-3 mb-6 max-w-3xl">Lisez cet article pour en savoir plus sur les dernières annonces de la radio.</p>
+                                <div className="relative z-10 p-8 pt-48 md:pt-64 flex flex-col justify-end min-h-[400px]">
+                                    <div className="flex items-center gap-3 mb-4">
+                                        <span className="px-3 py-1 bg-oxy-orange text-white text-xs font-bold rounded-full uppercase tracking-wider">{featuredNews.category || 'Actualité'}</span>
+                                        <span className="flex items-center text-sm text-white/80 font-medium">
+                                            <Clock className="w-4 h-4 mr-1.5" />
+                                            {featuredNews.date || 'Récemment'}
+                                        </span>
+                                    </div>
+                                    <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight group-hover:text-oxy-orange transition-colors">{featuredNews.title}</h2>
+                                    <p className="text-lg text-white/80 line-clamp-2 md:line-clamp-3 mb-6 max-w-3xl">La une du jour, cliquez pour lire la suite...</p>
 
-                                <div className="inline-flex items-center gap-2 text-white font-bold group-hover:text-oxy-orange transition-colors">
-                                    Lire l'article <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                                    <div className="inline-flex items-center gap-2 text-white font-bold group-hover:text-oxy-orange transition-colors">
+                                        Lire l'article <ArrowRight className="w-5 h-5 group-hover:translate-x-2 transition-transform" />
+                                    </div>
                                 </div>
-                            </div>
-                        </article>
+                            </article>
+                        </Link>
                     ) : (
                         <div className="p-12 text-center bg-neutral-900 rounded-3xl border border-white/10 text-white/50">
                             Aucune actualité publiée pour le moment.
@@ -103,25 +105,27 @@ export default async function ActusPage() {
                             </h2>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                 {recentNews.map((news: any, index: number) => (
-                                    <article key={news.id} className="group flex flex-col bg-neutral-900 rounded-3xl border border-white/10 overflow-hidden hover:border-oxy-orange/50 transition-colors cursor-pointer">
-                                        <div className="relative h-48 overflow-hidden">
-                                            <img src={getImage(index + 1)} alt={news.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                                            <div className="absolute top-4 left-4">
-                                                <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white/90 border border-white/20 text-xs font-bold rounded-full uppercase">{news.category || 'Actualité'}</span>
+                                    <Link key={news.id} href={`/actus/${news.id}`} className="group flex flex-col bg-neutral-900 rounded-3xl border border-white/10 overflow-hidden hover:border-oxy-orange/50 transition-colors cursor-pointer">
+                                        <article className="flex flex-col h-full">
+                                            <div className="relative h-48 overflow-hidden shrink-0">
+                                                <img src={getImage(news, index + 1)} alt={news.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                <div className="absolute top-4 left-4">
+                                                    <span className="px-2.5 py-1 bg-black/60 backdrop-blur-md text-white/90 border border-white/20 text-xs font-bold rounded-full uppercase">{news.category || 'Actualité'}</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className="p-6 flex flex-col flex-1">
-                                            <span className="flex items-center text-xs text-oxy-orange font-medium mb-3">
-                                                <Calendar className="w-3.5 h-3.5 mr-1.5" />
-                                                {news.date || 'Récemment'}
-                                            </span>
-                                            <h3 className="text-xl font-bold text-white mb-3 group-hover:text-oxy-orange transition-colors line-clamp-2">{news.title}</h3>
-                                            <p className="text-white/60 text-sm line-clamp-3 mb-4 flex-1">Lisez notre actualité pour découvrir toutes les informations.</p>
-                                            <div className="mt-auto inline-flex items-center text-sm font-bold text-white group-hover:text-oxy-orange">
-                                                Lire la suite <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                                            <div className="p-6 flex flex-col flex-1">
+                                                <span className="flex items-center text-xs text-oxy-orange font-medium mb-3">
+                                                    <Calendar className="w-3.5 h-3.5 mr-1.5" />
+                                                    {news.date || 'Récemment'}
+                                                </span>
+                                                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-oxy-orange transition-colors line-clamp-2">{news.title}</h3>
+                                                <p className="text-white/60 text-sm line-clamp-3 mb-4 flex-1">Lisez notre actualité pour découvrir toutes les informations.</p>
+                                                <div className="mt-auto inline-flex items-center text-sm font-bold text-white group-hover:text-oxy-orange">
+                                                    Lire la suite <ArrowRight className="w-4 h-4 ml-1.5 group-hover:translate-x-1 transition-transform" />
+                                                </div>
                                             </div>
-                                        </div>
-                                    </article>
+                                        </article>
+                                    </Link>
                                 ))}
                             </div>
                         </div>

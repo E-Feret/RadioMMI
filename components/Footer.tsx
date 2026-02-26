@@ -4,11 +4,15 @@ import Link from "next/link";
 import Image from "next/image";
 import { Anton } from 'next/font/google';
 import { usePathname } from "next/navigation";
+import { useAdminData } from "@/hooks/useAdminData";
+import NewsletterForm from "@/components/NewsletterForm";
 
 const anton = Anton({ weight: '400', subsets: ['latin'], display: 'swap' });
 
 export default function Footer() {
     const pathname = usePathname();
+    const { data: settings } = useAdminData("settings");
+    const adminSettings = settings as any;
 
     if (pathname.startsWith("/admin")) return null;
 
@@ -24,26 +28,32 @@ export default function Footer() {
                         <div className="relative w-32 h-12">
                             <Image src="/assets/logo/logo.svg" alt="Radio MMI" fill className="object-contain object-left" />
                         </div>
-                        <p className="text-white/90 text-sm leading-relaxed">
-                            Contactez Radio MMI, la webradio du département MMI.
+                        <p className="text-white/90 text-sm leading-relaxed whitespace-pre-line">
+                            {adminSettings?.description || "Contactez Radio MMI, la webradio du département MMI."}
                         </p>
                     </div>
 
                     <div className="space-y-2 text-sm text-white/80">
-                        <p><span className="text-oxy-orange font-bold">Email :</span> <a href="mailto:contact@radiommi.fr" className="hover:underline">contact@radiommi.fr</a></p>
-                        <p><span className="text-oxy-orange font-bold">WhatsApp :</span> <a href="https://wa.me/33632320156" target="_blank" rel="noopener noreferrer" className="hover:underline">+33 6 32 32 01 56</a></p>
+                        <p><span className="text-oxy-orange font-bold">Email :</span> <a href={`mailto:${adminSettings?.email || "contact@radiommi.fr"}`} className="hover:underline">{adminSettings?.email || "contact@radiommi.fr"}</a></p>
+                        <p><span className="text-oxy-orange font-bold">WhatsApp :</span> <a href={`https://wa.me/${(adminSettings?.phone || "33632320156").replace(/\D/g, '')}`} target="_blank" rel="noopener noreferrer" className="hover:underline">{adminSettings?.phone || "+33 6 32 32 01 56"}</a></p>
                     </div>
                 </div>
 
                 {/* COL 2: AGENCES (ADRESSES) */}
                 <div>
                     <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Notre Studio</h3>
-                    <div className="space-y-6 text-sm text-white/80">
+                    <div className="space-y-6 text-sm text-white/80 whitespace-pre-line">
                         <div>
-                            <p className="font-bold text-white mb-1">Troyes Champagne Métropole</p>
-                            <p>IUT de Troyes - Département MMI</p>
-                            <p>9 Rue de Québec</p>
-                            <p>10000 TROYES</p>
+                            {adminSettings?.address ? (
+                                <p>{adminSettings.address}</p>
+                            ) : (
+                                <>
+                                    <p className="font-bold text-white mb-1">Troyes Champagne Métropole</p>
+                                    <p>IUT de Troyes - Département MMI</p>
+                                    <p>9 Rue de Québec</p>
+                                    <p>10000 TROYES</p>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
@@ -70,10 +80,16 @@ export default function Footer() {
                     </div>
                 </div>
 
-                {/* COL 4: NAVIGATION & LEGAL */}
+                {/* COL 4: NEWSLETTER & NAVIGATION */}
                 <div>
-                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Navigation</h3>
-                    <ul className="space-y-2 mb-6 text-sm">
+                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mb-4`}>Newsletter</h3>
+                    <p className="text-sm text-white/80 mb-4 whitespace-pre-line">
+                        Ne manquez aucun projet étudiant ni émission spéciale !
+                    </p>
+                    <NewsletterForm />
+
+                    <h3 className={`${anton.className} text-xl !text-oxy-orange uppercase mt-8 mb-4`}>Navigation</h3>
+                    <ul className="grid grid-cols-2 gap-2 mb-6 text-sm">
                         <li><Link href="/" className="text-white/80 hover:text-oxy-orange transition-colors">Accueil</Link></li>
                         <li><Link href="/equipe" className="text-white/80 hover:text-oxy-orange transition-colors">Équipe</Link></li>
                         <li><Link href="/podcasts" className="text-white/80 hover:text-oxy-orange transition-colors">Podcasts</Link></li>
@@ -84,6 +100,7 @@ export default function Footer() {
                     <ul className="space-y-2 text-sm">
                         <li><Link href="/mentions-legales" className="text-white/80 hover:text-white transition-colors">Mentions Légales</Link></li>
                         <li><Link href="/confidentialite" className="text-white/80 hover:text-white transition-colors">Confidentialité</Link></li>
+                        <li className="pt-2"><Link href="/admin/login" className="text-white/40 hover:text-oxy-orange transition-colors flex items-center gap-1"><span className="w-1.5 h-1.5 rounded-full bg-oxy-orange"></span> Espace Admin</Link></li>
                     </ul>
                 </div>
             </div>
@@ -91,7 +108,7 @@ export default function Footer() {
             {/* COPYRIGHT */}
             <div className="max-w-7xl mx-auto px-4 mt-12 pt-8 border-t border-white/10 text-center">
                 <p className="text-white/60 text-sm">
-                    &copy; {new Date().getFullYear()} Radio MMI. Tous droits réservés.
+                    &copy; {new Date().getFullYear()} {adminSettings?.name || "Radio MMI"}. Tous droits réservés.
                 </p>
             </div>
         </footer>

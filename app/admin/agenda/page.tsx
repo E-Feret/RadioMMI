@@ -6,6 +6,13 @@ import { useAdminData } from "@/hooks/useAdminData";
 
 export default function AdminAgendaPage() {
     const { data: agenda, addItem, updateItem, deleteItem } = useAdminData("agenda");
+    const { data: equipeData } = useAdminData("equipe");
+    const equipeMembers = equipeData || [];
+
+    // Intervenant States
+    const [intervenantType, setIntervenantType] = useState<"equipe" | "guest">("equipe");
+    const [intervenantEquipeId, setIntervenantEquipeId] = useState("");
+    const [intervenantGuestText, setIntervenantGuestText] = useState("");
 
     // Modal states
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,7 +26,8 @@ export default function AdminAgendaPage() {
         time: "12:00 - 14:00",
         day: "Aujourd'hui",
         status: "Planifié",
-        type: "Direct"
+        type: "Direct",
+        show: ""
     });
 
     const openAddModal = () => {
@@ -28,9 +36,10 @@ export default function AdminAgendaPage() {
         setFormData({
             title: "",
             time: "12:00 - 14:00",
-            day: "Aujourd'hui",
+            day: new Date().toISOString().split('T')[0],
             status: "Planifié",
-            type: "Direct"
+            type: "Direct",
+            show: ""
         });
         setIsModalOpen(true);
     };
@@ -38,14 +47,47 @@ export default function AdminAgendaPage() {
     const openEditModal = (event: any) => {
         setIsEditing(true);
         setCurrentId(event.id);
+
+        let validDate = event.day;
+        // Fallback pour les anciennes données format "Lundi" etc.
+        if (!validDate || !validDate.includes("-")) {
+            validDate = new Date().toISOString().split('T')[0];
+        }
+
         setFormData({
             title: event.title,
             time: event.time || "12:00 - 14:00",
-            day: event.day || "Aujourd'hui",
+            day: validDate,
             status: event.status || "Planifié",
-            type: event.type || "Direct"
+            type: event.type || "Direct",
+            show: event.show || ""
         });
         setIsModalOpen(true);
+    };
+
+    const handleAddIntervenant = () => {
+        let newTag = "";
+        if (intervenantType === "equipe") {
+            const member = equipeMembers.find((m: any) => m.name === intervenantEquipeId || m.id.toString() === intervenantEquipeId);
+            if (member) newTag = member.name;
+            else if (intervenantEquipeId) newTag = intervenantEquipeId;
+        } else {
+            newTag = intervenantGuestText.trim();
+        }
+
+        if (!newTag) return;
+
+        const currentTags = formData.show ? formData.show.split(',').map(s => s.trim()).filter(Boolean) : [];
+        if (!currentTags.includes(newTag)) {
+            setFormData({ ...formData, show: [...currentTags, newTag].join(', ') });
+        }
+        setIntervenantGuestText("");
+        setIntervenantEquipeId(""); // reset
+    };
+
+    const handleRemoveIntervenant = (tagToRemove: string) => {
+        const currentTags = formData.show ? formData.show.split(',').map(s => s.trim()).filter(Boolean) : [];
+        setFormData({ ...formData, show: currentTags.filter(t => t !== tagToRemove).join(', ') });
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -177,6 +219,70 @@ export default function AdminAgendaPage() {
                                     />
                                 </div>
 
+                                <div>
+                                    <label className="block text-sm font-bold text-white/70 mb-2">Intervenants dans l'émission</label>
+
+                                    {/* Liste des tags actuels */}
+                                    <div className="flex flex-wrap gap-2 mb-3">
+                                        {(formData.show ? formData.show.split(',').map(s => s.trim()).filter(Boolean) : []).map((tag, idx) => (
+                                            <span key={idx} className="bg-blue-500/20 text-blue-400 border border-blue-500/20 px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2">
+                                                {tag}
+                                                <button type="button" onClick={() => handleRemoveIntervenant(tag)} className="hover:text-white transition-colors">
+                                                    <X className="w-3 h-3" />
+                                                </button>
+                                            </span>
+                                        ))}
+                                        {(!formData.show || formData.show.trim() === '') && (
+                                            <span className="text-white/30 text-sm italic">Aucun intervenant ajouté</span>
+                                        )}
+                                    </div>
+
+                                    {/* Ajouter un tag */}
+                                    <div className="bg-black/20 border border-white/5 rounded-xl p-4">
+                                        <div className="flex gap-4 mb-4">
+                                            <label className="flex items-center gap-2 text-sm font-bold text-white/70 cursor-pointer">
+                                                <input type="radio" name="interType" checked={intervenantType === 'equipe'} onChange={() => setIntervenantType('equipe')} className="accent-blue-500" />
+                                                Membre de l'Équipe
+                                            </label>
+                                            <label className="flex items-center gap-2 text-sm font-bold text-white/70 cursor-pointer">
+                                                <input type="radio" name="interType" checked={intervenantType === 'guest'} onChange={() => setIntervenantType('guest')} className="accent-blue-500" />
+                                                Guest (Texte)
+                                            </label>
+                                        </div>
+
+                                        <div className="flex gap-2">
+                                            {intervenantType === 'equipe' ? (
+                                                <select
+                                                    value={intervenantEquipeId}
+                                                    onChange={(e) => setIntervenantEquipeId(e.target.value)}
+                                                    className="flex-1 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500/50"
+                                                >
+                                                    <option value="">Sélectionner un membre...</option>
+                                                    {equipeMembers.map((m: any) => (
+                                                        <option key={m.id} value={m.name}>{m.name} {m.role ? `- ${m.role}` : ''}</option>
+                                                    ))}
+                                                </select>
+                                            ) : (
+                                                <input
+                                                    type="text"
+                                                    value={intervenantGuestText}
+                                                    onChange={(e) => setIntervenantGuestText(e.target.value)}
+                                                    placeholder="Nom du Guest..."
+                                                    className="flex-1 bg-black/40 border border-white/10 rounded-lg px-3 py-2 text-white focus:outline-none focus:border-blue-500/50"
+                                                />
+                                            )}
+
+                                            <button
+                                                type="button"
+                                                onClick={handleAddIntervenant}
+                                                className="bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-lg font-bold transition-colors flex items-center gap-2"
+                                            >
+                                                <Plus className="w-4 h-4" /> Ajouter
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-bold text-white/70 mb-2">Horaire complet</label>
@@ -190,36 +296,39 @@ export default function AdminAgendaPage() {
                                         />
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-bold text-white/70 mb-2">Jour du créneau</label>
-                                        <select
+                                        <label className="block text-sm font-bold text-white/70 mb-2">Date du créneau</label>
+                                        <input
+                                            type="date"
                                             value={formData.day}
-                                            onChange={(e) => setFormData({ ...formData, day: e.target.value })}
-                                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-                                        >
-                                            <option value="Lundi">Lundi</option>
-                                            <option value="Mardi">Mardi</option>
-                                            <option value="Mercredi">Mercredi</option>
-                                            <option value="Jeudi">Jeudi</option>
-                                            <option value="Vendredi">Vendredi</option>
-                                            <option value="Samedi">Samedi</option>
-                                            <option value="Dimanche">Dimanche</option>
-                                            <option value="Aujourd'hui">Aujourd'hui</option>
-                                        </select>
+                                            onChange={(e) => {
+                                                const d = new Date(e.target.value);
+                                                if (d.getDay() === 0) {
+                                                    alert("L'IUT est fermé le dimanche. Vous ne pouvez pas planifier d'émission ce jour-là.");
+                                                    return;
+                                                }
+                                                setFormData({ ...formData, day: e.target.value });
+                                            }}
+                                            className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50 [color-scheme:dark]"
+                                        />
                                     </div>
                                 </div>
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-bold text-white/70 mb-2">Type d'événement</label>
+                                        <label className="block text-sm font-bold text-white/70 mb-2">Concept de l'émission</label>
                                         <select
                                             value={formData.type}
                                             onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                                             className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
                                         >
-                                            <option value="Direct">Direct</option>
+                                            <option value="default">Émission Classique (Défaut)</option>
+                                            <option value="matinale">La Matinale</option>
+                                            <option value="podcast">Podcasts & Talks</option>
+                                            <option value="night">La Night</option>
+                                            <option value="mag">Les Magazines</option>
+                                            <option value="Direct">Direct (Générique)</option>
                                             <option value="Replay">Replay</option>
                                             <option value="Playlist">Playlist</option>
-                                            <option value="Événement">Événement</option>
                                         </select>
                                     </div>
                                     <div>

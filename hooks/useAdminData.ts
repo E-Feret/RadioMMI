@@ -16,7 +16,7 @@ export function useAdminData(key: string) {
                 .order('id', { ascending: true });
 
             if (error) {
-                console.error(`Error fetching ${key}:`, error);
+                console.error(`Error fetching ${key}:`, error.message || JSON.stringify(error));
                 return;
             }
             if (key === "settings") {
@@ -37,8 +37,8 @@ export function useAdminData(key: string) {
             .upsert({ id: newData.id || 1, ...newData });
 
         if (error) {
-            console.error(`Error saving ${key}:`, error);
-            alert("Erreur : " + error.message);
+            console.error(`Error saving ${key}:`, error.message || JSON.stringify(error));
+            alert("Erreur : " + (error.message || "Erreur de base de données"));
             return;
         }
         setData(newData);
@@ -51,8 +51,8 @@ export function useAdminData(key: string) {
             .select();
 
         if (error) {
-            console.error(`Error adding to ${key}:`, error);
-            alert("Erreur : " + error.message);
+            console.error(`Error adding to ${key}:`, error.message || JSON.stringify(error));
+            alert("Erreur : " + (error.message || "Erreur d'ajout"));
             return;
         }
 
@@ -68,8 +68,8 @@ export function useAdminData(key: string) {
             .eq('id', id);
 
         if (error) {
-            console.error(`Error updating ${key}:`, error);
-            alert("Erreur : " + error.message);
+            console.error(`Error updating ${key}:`, error.message || JSON.stringify(error));
+            alert("Erreur : " + (error.message || "Erreur de mise à jour"));
             return;
         }
 
@@ -83,8 +83,8 @@ export function useAdminData(key: string) {
             .eq('id', id);
 
         if (error) {
-            console.error(`Error deleting from ${key}:`, error);
-            alert("Erreur : " + error.message);
+            console.error(`Error deleting from ${key}:`, error.message || JSON.stringify(error));
+            alert("Erreur : " + (error.message || "Erreur de suppression"));
             return;
         }
 

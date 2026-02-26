@@ -37,7 +37,7 @@ export default function MegaMenuOverlay({ isOpen, items, category }: MegaMenuOve
                                 <li key={item.label}>
                                     <Link
                                         href={item.href}
-                                        className="group flex items-center justify-between px-4 py-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
+                                        className="group w-full flex items-center justify-between px-4 py-3 rounded-xl hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
                                     >
                                         <span className="font-bold text-oxy-blue dark:text-white group-hover:text-oxy-orange transition-colors">
                                             {item.label}

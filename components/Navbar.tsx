@@ -101,7 +101,7 @@ export default function Navbar() {
                         {/* Nav Items */}
                         <div className="flex items-center gap-1">
                             {NAVI_LINKS.map((link) => (
-                                <div key={link.label} className="relative group">
+                                <div key={link.label} className="relative z-50">
                                     <Link
                                         href={link.href}
                                         className={`px-3 py-1.5 rounded-full text-sm font-bold transition-all flex items-center gap-1 ${isActive(link.href)
